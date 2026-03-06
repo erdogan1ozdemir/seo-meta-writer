@@ -16,6 +16,36 @@ description: >
 
 Generate high-quality, data-informed meta titles and descriptions for multiple pages.
 
+## Execution Mode: AUTONOMOUS
+
+This skill runs end-to-end without asking for permission at intermediate steps. Once the user provides URLs and brand info, execute the entire workflow silently and deliver the final output.
+
+**Do NOT ask for confirmation before:**
+- Making DataForSEO API calls (On-Page, SERP, Keyword Data, Labs)
+- Crawling pages or fetching SERP data
+- Selecting primary/secondary keywords
+- Choosing modifiers based on volume or SERP data
+- Generating titles and descriptions
+- Creating Excel files
+- Running cannibalization checks
+
+**Only pause and ask the user if:**
+- Brand name is missing and cannot be inferred
+- Language is ambiguous (e.g., mixed TLDs, unclear URL patterns)
+- A critical error persists after all retry/alternative attempts have been exhausted
+- The user explicitly asks for a review before final output
+
+**Error behavior — DO NOT SKIP, FIX:**
+- If a DataForSEO call fails, DO NOT silently skip it. Stop, diagnose the error, try alternatives (different location code, different endpoint, retry), and only report to the user if all alternatives fail.
+- Common issue: location-based errors. If location_code 2792 (Turkey) fails, try location_name "Turkey" instead, or try without location parameter, or try a different location_code format.
+- If an API returns unexpected structure, try parsing differently before giving up.
+- Deliver the complete result set in one response, not piece by piece.
+- When the user provides enough context (URLs + brand), skip Step 1 questions entirely and go straight to work.
+
+**General behavior:**
+- If DataForSEO MCP tools are available, use them immediately — do not ask "Shall I use DataForSEO?" or "Do you want me to analyze the SERP?"
+- Batch all API calls efficiently — do not narrate each call or ask between them
+
 ## Before you start
 
 Read these reference files based on what you need:
@@ -40,14 +70,16 @@ Step 7: Output (chat table + optional Excel)
 
 ## Step 1: Collect Configuration
 
-Ask the user for these essentials (skip what's already provided):
+Gather essentials from context — only ask what's truly missing:
 
 1. **Brand name** (required) — will be appended to titles with `|` separator
-2. **Language** — if not obvious from URLs/keywords, ask. Auto-detect from URL TLD or path (`.com.tr` → Turkish, `/en/` → English, `/de/` → German)
-3. **Sector/vertical** — e-commerce, hospitality, finance, cosmetics, tech, etc. (affects tone)
-4. **DataForSEO availability** — if MCP tools are available, inform the user you can do deeper analysis
+2. **Language** — auto-detect from URL TLD or path (`.com.tr` → Turkish, `/en/` → English, `/de/` → German). Only ask if ambiguous.
+3. **Sector/vertical** — infer from brand profile or URL patterns. Only ask if unknown brand.
+4. **DataForSEO** — if MCP tools are available, use them silently. Do not ask.
 
-If the brand is in `references/brand-profiles.md`, load its pre-configured defaults silently and confirm with the user: "I'll use pipe separator and soft CTAs as per your usual VitrA style — sound good?"
+If the brand is in `references/brand-profiles.md`, load its defaults and proceed — do not confirm with the user unless something seems off.
+
+**Shortcut:** If the user provides URLs + brand name in their first message, that's enough. Skip all questions and start working immediately.
 
 ## Step 2: Ingest Data
 
@@ -166,6 +198,12 @@ Read `references/style-rules.md` for the full rule set. Key principles:
   - Second choice: if no volume data, pick the modifier **most used by SERP competitors** (e.g., 7/10 competitors use "Fiyatları" → use it)
   - Third choice: if competitors use something unexpected (e.g., "Özellikleri" or "Karşılaştırma" dominate instead of "Fiyatları"), **follow the SERP**, not the default
   - Last resort only: use category-based defaults from the style rules
+- **"ve" en fazla 1 kez** — title'da "ve" tekrar etme. İkinci bağlaç için `&` veya `,` kullan:
+  - Kötü: `Ruj Çeşitleri ve Renkleri, Ruj Modelleri ve Fiyatları | Flormar`
+  - İyi: `Ruj Çeşitleri & Renkleri, Ruj Modelleri ve Fiyatları | Flormar`
+- **Kategori hiyerarşisine dikkat** — alt kategori sayfası için üst kategorinin genel keyword'ünü kullanma. URL slug'ındaki niteleyici (likit, ahşap, köşe, çocuk vb.) keyword'de mutlaka korunmalı:
+  - Kötü: `/likit-kapatici` → `Kapatıcı Çeşitleri ve Fiyatları`
+  - İyi: `/likit-kapatici` → `Likit Kapatıcı Çeşitleri ve Fiyatları, Likit Concealer`
 - **No year** in titles unless explicitly requested or blog content
 - **No .com/.com.tr** in titles
 - **No subjective superlatives** like "En İyi" unless SERP data shows competitors using it heavily
@@ -270,8 +308,8 @@ If DataForSEO was used, add:
 | Pri. Vol | Sec. Vol | SERP Top Modifier | Differentiation Note |
 ```
 
-### Excel Output (when requested or for 10+ pages)
-Read the xlsx skill (`/mnt/skills/public/xlsx/SKILL.md`) before creating the Excel file.
+### Excel Output (automatically for 10+ pages, or when user asks)
+Read the xlsx skill (`/mnt/skills/public/xlsx/SKILL.md`) before creating the Excel file. Do not ask "Excel oluşturayım mı?" — if there are 10+ pages, just create it.
 
 **Sheet 1: "Title & Description"** — Main output table with all columns above
 **Sheet 2: "SERP Analysis"** (if DataForSEO used) — Per-keyword breakdown:
@@ -300,7 +338,7 @@ When DataForSEO MCP is not available, the skill still works — just with user-p
 5. Cannibalization check still runs on the provided keywords
 6. No search volume or SERP analysis columns in output
 
-Inform the user: "DataForSEO MCP bağlantısı olmadığı için keyword discovery ve SERP analizi yapamıyorum, ama sağladığın keyword'lerle title/description üretimi ve cannibalization kontrolü yapıyorum."
+Mention briefly at the start of output that keyword discovery and SERP analysis were skipped because DataForSEO is not connected. Do not over-explain or ask if the user wants to set it up.
 
 ---
 

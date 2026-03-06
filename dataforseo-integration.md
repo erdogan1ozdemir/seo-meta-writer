@@ -2,6 +2,10 @@
 
 This document explains how to use DataForSEO APIs (via MCP or direct API) to enhance meta title/description generation with real data.
 
+> **IMPORTANT: Autonomous execution.** When DataForSEO MCP tools are detected, use them immediately without asking the user for permission. Do not say "I'll now call the SERP API" or "Shall I look up the keywords?" — just call the tools, process the results, and deliver the output. Batch calls efficiently: queue all URLs for On-Page API, all keywords for SERP API, etc.
+>
+> **NEVER silently skip failed calls.** If a call fails, diagnose the error and try alternatives before reporting to the user. See Section 6 for the full error recovery playbook.
+
 ## Table of Contents
 1. Prerequisites
 2. API Endpoints Used
@@ -262,27 +266,76 @@ These are estimates — actual costs depend on DataForSEO pricing tier and speci
 
 ---
 
-## 6. Error Handling & Fallbacks
+## 6. Error Handling — NEVER Skip, Always Recover
 
-### URL not crawlable
-- Instant Pages returns error → Fall back to URL pattern analysis only
-- Note in output: "Sayfa içeriği çekilemedi — URL pattern'e göre tahmin"
+The golden rule: **Do NOT silently skip a failed call.** Stop, diagnose, try alternatives, and only report to the user after all options are exhausted.
 
-### No ranking data
-- Ranked Keywords returns empty → URL is new or not indexed
-- Fall back to user-provided keyword, or derive from URL slug
-- Note: "Sıralama verisi bulunamadı — keyword kullanıcı tarafından sağlandı"
+### Location-Based Errors (Most Common)
 
-### SERP API timeout or error
-- Retry once, then skip SERP analysis for that keyword
-- Generate title/description using style rules only
-- Note: "SERP analizi yapılamadı — stil kurallarına göre üretildi"
+DataForSEO location parameters frequently cause errors. When a call fails with a location-related error:
 
-### Rate limiting
-- If approaching 2000 calls/minute, add delays between batches
-- For large batches (200+ URLs), suggest splitting into multiple sessions
+**Retry sequence (try each in order until one works):**
 
-### Empty search volume
-- Some niche keywords may return 0 volume from Google Ads
-- Note as "< 10" (Google doesn't report volumes under 10)
-- Don't discard the keyword — it may still be the best match for the page
+1. **Try `location_code` numeric format:**
+   - Turkey: `2792`
+   - UK: `2826`
+   - Germany: `2276`
+   - US: `2840`
+   - France: `2250`
+
+2. **Try `location_name` string format instead:**
+   - `"Turkey"`, `"United Kingdom"`, `"Germany"`, `"United States"`
+
+3. **Try `location_coordinate` if available:**
+   - Format: `"41.0082,28.9784"` (lat,lng for Istanbul)
+
+4. **Try without location parameter entirely** (uses default/global)
+
+5. **Try with a broader location:**
+   - If city-level fails, try country-level
+   - If country fails, try without location
+
+**Example recovery flow:**
+```
+Call: SERP API with location_code=2792 → ERROR
+Retry 1: SERP API with location_name="Turkey" → ERROR  
+Retry 2: SERP API with location_code=2792, language_code="tr" → SUCCESS ✓
+```
+
+### API Authentication Errors
+- Status 401/403 → Credentials issue. Stop and inform the user: "DataForSEO API credential hatası. API login ve password bilgilerinizi kontrol edin."
+- Do NOT retry auth errors — they won't resolve without user action.
+
+### URL Not Crawlable
+- Instant Pages returns error for a specific URL:
+  1. **Retry once** with `enable_javascript: true`
+  2. **Retry with** `enable_browser_rendering: true` if available
+  3. If still fails → Stop for this URL. Report: "Bu URL crawl edilemedi: [URL]. Devam edilsin mi, yoksa alternatif URL var mı?"
+
+### Rate Limiting (429 errors)
+- Wait 30 seconds, then retry the same call
+- If still 429, wait 60 seconds
+- If still failing, reduce batch size (split 20-URL batches into 10-URL batches)
+- Do NOT skip rate-limited calls — they will succeed with patience
+
+### Empty Results (Not an Error)
+- Ranked Keywords returns empty → URL is new or not indexed yet
+  - This is expected behavior, not an error
+  - Fall back to user-provided keyword, or derive from URL slug + page content
+  - Note in output: "Sıralama verisi bulunamadı — keyword URL ve içerik analizine göre belirlendi"
+
+- Search volume returns 0 or null for a keyword:
+  - Note as "< 10" (Google doesn't report volumes under 10)
+  - Do NOT discard the keyword — it may still be the best match for the page
+
+### SERP API Timeout
+1. **Retry once** with same parameters
+2. **Retry with** `depth: 10` (reduce if it was higher)
+3. **Try Standard method** instead of Live if available
+4. If all retries fail → Report: "SERP verisi [keyword] için alınamadı. Farklı bir keyword denememi ister misiniz?"
+
+### General Retry Rules
+- Maximum 3 retry attempts per call (with different parameters each time)
+- Between retries, change at least one parameter (location format, depth, method)
+- After 3 failed attempts with alternatives, STOP and report the error clearly to the user
+- Never silently drop data — the user must know what succeeded and what didn't

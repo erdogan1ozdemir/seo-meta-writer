@@ -75,6 +75,70 @@ Rules:
 **Example (bad — too stuffed):**
 `Siyah Lavabo, Siyah Banyo Lavabosu, Siyah Evye Fiyatları Modelleri | VitrA` (75 chars — too long, unnatural)
 
+### "ve" Tekrar Yasağı — Çeşitlilik Kuralı
+
+Title içinde **"ve" bağlacı en fazla 1 kez** kullanılmalı. Birden fazla "ve" title'ı tekdüze ve uzun yapar. Bunun yerine `,` ve `&` ile çeşitle:
+
+**Kötü (tekrarlı "ve"):**
+```
+Ruj Çeşitleri ve Renkleri, Ruj Modelleri ve Fiyatları | Flormar
+Maskara ve Rimel Çeşitleri ve Fiyatları, Rimel Modelleri | Flormar
+```
+
+**İyi (çeşitlendirilmiş bağlaçlar):**
+```
+Ruj Çeşitleri & Renkleri, Ruj Modelleri ve Fiyatları | Flormar
+Maskara & Rimel Fiyatları, Rimel Modelleri | Flormar
+```
+
+**Bağlaç seçim kuralı:**
+- `&` → Yan yana gelen ve birbirine çok yakın iki kavram: `Maskara & Rimel`, `Modelleri & Fiyatları`
+- `,` → Farklı keyword gruplarını ayırırken: `Ruj Çeşitleri & Renkleri, Ruj Modelleri`
+- `ve` → Title içinde en fazla 1 kez, genellikle son modifier çiftinde: `Modelleri ve Fiyatları`
+- Bir title'da `ve` + `&` + `,` üçü birden varsa → çok kalabalık, sadeleştir
+
+**Description'larda** "ve" tekrarı daha tolere edilebilir çünkü doğal cümle yapısı gerektirir, ama yine de aynı cümle içinde 2'den fazla "ve" kullanılmamalı.
+
+### Kategori Hiyerarşisi Farkındalığı — Kapsayıcı Keyword Hatası
+
+Bir alt kategori sayfası için title yazarken, **o keyword'ün üst kategoriye ait olup olmadığını kontrol et.** Aynı sitede üst kategori sayfası zaten o genel keyword'ü hedefliyordur — alt kategori sayfası daha spesifik olmalı.
+
+**Temel kural:** Eğer yazdığın keyword tek başına bir üst kategoriyi tanımlayabilecek kadar genişse, o keyword bu alt kategori için yanlış seçimdir. Keyword'ü daralt ve spesifikleştir.
+
+**Kötü — üst kategori keyword'ünü çalıyor:**
+```
+URL: /likit-kapatici
+Title: Kapatıcı Çeşitleri ve Fiyatları | Flormar
+→ YANLIŞ: "Kapatıcı" genel kategorinin keyword'ü, bu sadece likit kapatıcı sayfası
+```
+
+**İyi — spesifik ve daraltılmış:**
+```
+URL: /likit-kapatici
+Title: Likit Kapatıcı Çeşitleri ve Fiyatları, Likit Concealer | Flormar
+→ DOĞRU: "Likit" niteleyicisi her keyword grubunda korunuyor
+```
+
+**Nasıl kontrol edilir:**
+1. Yazdığın primary keyword'ü al: ör. "kapatıcı"
+2. Kendin sor: "Bu sitede sadece 'kapatıcı' diye ayrı bir kategori sayfası var mı veya olabilir mi?"
+3. Evetse → keyword'ü daralt: "likit kapatıcı", "stick kapatıcı", "göz altı kapatıcısı"
+4. URL slug'ı sana ipucu verir: `/likit-kapatici` → keyword'de "likit" mutlaka olmalı
+
+**Yaygın hata örnekleri ve düzeltmeleri:**
+
+| URL | Kötü Title | İyi Title |
+|-----|-----------|-----------|
+| `/likit-kapatici` | Kapatıcı Çeşitleri ve Fiyatları | Likit Kapatıcı Çeşitleri ve Fiyatları, Likit Concealer |
+| `/goz-farı-paleti` | Göz Farı Modelleri ve Fiyatları | Göz Farı Paleti Fiyatları & Modelleri |
+| `/erkek-parfum` | Parfüm Çeşitleri ve Fiyatları | Erkek Parfüm Çeşitleri & Fiyatları |
+| `/kose-banyo-dolabi` | Banyo Dolabı Modelleri ve Fiyatları | Köşe Banyo Dolabı Modelleri ve Fiyatları |
+| `/cocuk-scooter` | Scooter Çeşitleri ve Fiyatları | Çocuk Scooter Fiyatları & Modelleri |
+| `/ahsap-puzzle` | Puzzle Çeşitleri ve Fiyatları | Ahşap Puzzle Çeşitleri ve Fiyatları |
+
+**DataForSEO ile otomatik kontrol:**
+Ranked Keywords verisinde, eğer daha kısa/genel bir keyword varyantı (ör. "kapatıcı") ayrı bir URL'de rank alıyorsa, bu URL için o genel keyword'ü seçme — daha spesifik varyantı (ör. "likit kapatıcı") seç.
+
 ---
 
 ## 3. Description Structure Rules
@@ -300,6 +364,8 @@ English:
 8. **No emoji in titles** — for most brands. Exception: if the brand specifically uses them (rare, case-specific like Pasaj's 🖥️ — only if explicitly in brand profile).
 9. **No generic filler** — "Kaliteli ve birbirinden güzel" is old-school and wastes characters.
 10. **No mixing languages** — don't put English modifiers in a Turkish title or vice versa.
+11. **No repeated "ve"** — title'da "ve" en fazla 1 kez. İkinci bağlaç `&` veya `,` olmalı. "Çeşitleri ve Renkleri, Modelleri ve Fiyatları" → "Çeşitleri & Renkleri, Modelleri ve Fiyatları"
+12. **No parent-category keywords on child pages** — alt kategori sayfasında üst kategorinin genel keyword'ünü kullanma. URL'deki niteleyiciyi (likit, ahşap, çocuk vb.) keyword'de koru. `/likit-kapatici` → "Kapatıcı" değil "Likit Kapatıcı" olmalı.
 
 ### Description Anti-Patterns
 1. **No verbatim title repetition** — description should complement, not repeat the title.
