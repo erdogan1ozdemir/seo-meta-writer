@@ -59,10 +59,13 @@ Read these reference files based on what you need:
 ```
 Step 1: Collect configuration from user
 Step 2: Ingest URL + keyword data
+        ├─ If full-list provided: separate active vs reference pages
+        └─ Build reserved keyword map from reference pages
 Step 3: [If DataForSEO] Page content analysis + keyword discovery
+        └─ If page topic unclear: run fallback chain (URL → Schema → H1 → Title → Content)
 Step 4: [If DataForSEO] SERP competitor title/description analysis
 Step 5: Generate titles and descriptions
-Step 6: Cannibalization check (batch-wide)
+Step 6: Cannibalization check (active batch + full-site reference)
 Step 7: Output (chat table + optional Excel)
 ```
 
@@ -90,11 +93,47 @@ Expected columns (flexible naming):
 - `URL` (required)
 - `Keyword` or `Hedef Keyword` or `Target Keyword` (optional if DataForSEO available)
 - `Page Type` or `Sayfa Tipi` (optional — will be auto-detected)
+- `Active` or `Aktif` or `İşlem` (optional — marks which pages to generate title/desc for)
 - Any existing title/description columns are noted but not used as basis for new ones
 
 ### Option B: Chat paste
 User pastes URL list (one per line) with optional keyword next to each URL.
 Parse flexibly — accept tab-separated, comma-separated, or even natural language lists.
+
+### Full-List + Subset Mode (Cannibalization Prevention)
+
+User can provide a **complete site category list** but request title/description generation for only a subset. This is critical for cannibalization prevention — the skill needs to know the full keyword landscape of the site.
+
+**How it works:**
+
+1. User provides ALL URLs (e.g., full category tree of 200 pages)
+2. User marks which ones to process — in one of these ways:
+   - A column: `Active = yes/no` or `İşlem = evet/hayır`
+   - Explicitly says: "Sadece şu 15 URL için yap, diğerleri referans"
+   - Marks with `*`, `>`, or any indicator in the list
+   - Says: "İlk 20'si için title/desc yaz, kalanlar cannibalization referansı"
+
+3. Skill separates the list into two groups:
+   - **Active pages** → Full workflow: page analysis, keyword discovery, SERP analysis, title/desc generation
+   - **Reference pages** → Lightweight analysis only: determine their likely primary keyword (from URL slug, page type, or quick data check) to build the "reserved keyword map"
+
+4. The **reserved keyword map** feeds into Step 6 (Cannibalization Check):
+   - Active pages cannot use keywords that reference pages already own
+   - If an active page's best keyword candidate conflicts with a reference page, pick the next best alternative
+
+**Example:**
+```
+User provides 50 category URLs. Says: "İlk 10'u için title/desc yaz."
+
+Skill:
+├─ 10 active pages → full analysis + title/desc generation
+├─ 40 reference pages → extract likely keywords from URL slugs
+├─ Reserved keyword map: {"lavabo": /c-lavabolar, "küvet": /c-kuvetler, ...}
+└─ Active page /c-kose-kuvet gets "Köşe Küvet" not "Küvet" (because "Küvet" is reserved by /c-kuvetler)
+```
+
+**If user provides only active pages (no reference list):**
+Proceed normally — cannibalization check runs only within the active batch.
 
 ### Page Type Auto-Detection
 Infer page type from URL pattern:
@@ -128,11 +167,61 @@ Use **DataForSEO Labs → Ranked Keywords** for each URL to find:
 - Keywords the page already ranks for (with positions and traffic)
 - The strongest keyword candidate based on volume × relevance
 
-### 3c. Primary Keyword Selection
-Combine page content (3a) and ranking data (3b) to select the **primary keyword**:
+### 3c. Page Understanding Fallback Chain
+
+If after 3a and 3b the page's topic or primary keyword is still unclear (e.g., On-Page API returned thin data, Ranked Keywords returned empty, URL slug is ambiguous), apply this fallback chain. Each step is ordered from **least token-consuming to most** — stop as soon as you get a clear answer:
+
+```
+Step 1: URL Slug Analysis (0 tokens, 0 API calls)
+│  Parse the URL path: /c-likit-kapatici → "likit kapatıcı"
+│  Often sufficient for well-structured sites.
+│  → Clear? STOP. Use this as primary keyword candidate.
+│
+Step 2: Breadcrumb Schema Check (minimal tokens)
+│  Fetch the page and look for BreadcrumbList schema (JSON-LD or microdata).
+│  Breadcrumbs reveal exact category hierarchy: Home > Makyaj > Kapatıcı > Likit Kapatıcı
+│  This also tells you the parent category (for hierarchy awareness).
+│  → Found? STOP. Use last breadcrumb item as primary keyword.
+│
+Step 3: Product/Category Schema Check (minimal tokens)
+│  Look for Product, ProductGroup, or CollectionPage schema on the page.
+│  Schema contains: name, category, description fields.
+│  → Found? STOP. Use schema name/category as keyword.
+│
+Step 4: H1 Tag Check (minimal tokens)
+│  Extract just the H1 from the page.
+│  H1 is usually the most direct indicator of page topic.
+│  → Clear and specific? STOP. Use H1 as keyword basis.
+│
+Step 5: Existing Title Tag (minimal tokens)
+│  Read the current <title> tag.
+│  Even if we're rewriting it, the current title reveals the intended topic.
+│  → Informative? STOP. Extract keyword from current title.
+│
+Step 6: Page Content Scan (more tokens)
+│  Fetch first 500 words of visible body text.
+│  Extract the dominant topic from content.
+│  This is the most expensive step — use only as last resort.
+│  → STOP. Derive keyword from content analysis.
+```
+
+**For reference pages (Full-List + Subset Mode):**
+Only run Steps 1-2 of this chain. URL slug + breadcrumb is enough to build the reserved keyword map. Do NOT crawl full content for reference pages — too expensive.
+
+**For active pages:**
+Run the full chain as needed until topic is clear.
+
+**Implementation note:** When using web_fetch or browser tools to check schemas/H1, extract ONLY the specific data needed. Do not load the entire page into context. Use targeted extraction:
+- For schema: look for `<script type="application/ld+json">` blocks only
+- For H1: extract just the `<h1>` tag
+- For breadcrumb: look for BreadcrumbList in schema or `.breadcrumb` / `nav[aria-label="breadcrumb"]` in HTML
+
+### 3d. Primary Keyword Selection
+Combine page content (3a), ranking data (3b), and fallback chain (3c) to select the **primary keyword**:
 - Highest search volume among keywords that match the page's actual content
 - Prefer keywords where the page already has ranking momentum (positions 4-20 = opportunity zone)
 - If no ranking data exists, derive the primary keyword from H1 + page content topic
+- **Check against reserved keyword map** (from reference pages) — if the best keyword is reserved, pick the next best alternative
 
 ### 3d. Secondary Keyword Discovery
 Use **DataForSEO Labs → Ranked Keywords** on the top 3-5 SERP competitors for the primary keyword:
@@ -279,21 +368,33 @@ Only if total stays under 70 characters
 
 ## Step 6: Cannibalization Check
 
-After generating all titles, run a batch-wide check:
+After generating all titles, run a **two-layer** cannibalization check:
 
-1. **Exact match:** Same primary keyword assigned to 2+ URLs → **BLOCK** — reassign one
-2. **Near match:** Very similar keywords (e.g., "lavabo modelleri" vs "lavabo çeşitleri") on separate pages → **WARNING** with note
+### Layer 1: Active Batch Check
+Check within the active pages being processed:
+
+1. **Exact match:** Same primary keyword assigned to 2+ active URLs → **BLOCK** — reassign one
+2. **Near match:** Very similar keywords (e.g., "lavabo modelleri" vs "lavabo çeşitleri") → **WARNING** with note
 3. **Semantic overlap:** Different keywords but same search intent → **INFO** flag
 
+### Layer 2: Full-Site Check (if reference pages provided)
+Check active page keywords against the **reserved keyword map** built from reference pages:
+
+1. **Active page keyword matches a reference page's keyword** → **BLOCK** — the reference page owns that keyword. Pick an alternative for the active page.
+2. **Active page keyword is a parent of a reference page's keyword** → **WARNING** — e.g., active targets "kapatıcı" but reference page `/likit-kapatici` exists. Active page may be too broad.
+3. **Active page keyword is a child of a reference page's keyword** → **OK** — this is expected (alt kategori daha spesifik olmalı zaten).
+
+### Resolution Actions
 For each flagged pair, suggest:
-- Which URL should keep the keyword (based on content relevance + ranking data)
-- Alternative keyword for the other URL
+- Which URL should keep the keyword (based on content relevance + ranking data + URL hierarchy)
+- Alternative keyword for the conflicting URL
 - Or consolidation recommendation if pages should be merged
 
 Mark cannibalization status in output:
 - ✅ Clean — no conflicts
-- ⚠️ Near match — review recommended
+- ⚠️ Near match — review recommended  
 - 🔴 Duplicate target — must resolve
+- 🟡 Reserved by reference page — alternative keyword assigned
 
 ## Step 7: Output
 

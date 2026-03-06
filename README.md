@@ -20,6 +20,8 @@ Sadece title/description yazmaz — arkada şunları yapar:
 - Bu veriye göre title'daki modifier'ı seçer ("Fiyatları" mı, "Modelleri" mi, "Çeşitleri" mi — hangisinin hacmi yüksekse ve SERP'te ne baskınsa)
 - Secondary keyword'leri rakip URL'lerden keşfeder
 - Batch genelinde cannibalization kontrolü yapar
+- Tam kategori listesi verilirse, sadece istenen sayfaları işler ama tüm listeye karşı cannibalization kontrolü uygular
+- Sayfanın ne hakkında olduğunu anlayamazsa otomatik fallback zinciri çalıştırır (URL slug → Breadcrumb schema → Product schema → H1 → Title → İçerik)
 - Sonucu tablo + Excel olarak verir
 
 **35+ Türk markası** için hazır profiller içerir (VitrA, Pasaj, Özdilek, Flormar, D Maris Bay, Turkcell, QNB, vb.)
@@ -133,6 +135,33 @@ https://www.dmarisbay.com/en/dining
 https://www.dmarisbay.com/en/accommodation
 https://www.dmarisbay.com/en/activities
 ```
+
+### Örnek 5 — Tam liste ver, bir kısmını işle (cannibalization önleme)
+
+Tüm kategori ağacını verip sadece belirli sayfalar için title/description isteyebilirsin. Skill, geri kalan sayfaların keyword'lerini "rezerve" olarak işaretler ve çakışma olmaz.
+
+```
+Aşağıdaki tüm kategori listesini ver. Sadece * ile işaretlilerin title/description'ını yaz.
+Brand: Flormar
+
+* /ruj
+* /likit-ruj
+/dudak-kalemi
+/dudak-bakimi
+* /fondoten
+* /likit-fondoten
+/pudra
+/kapatici
+* /likit-kapatici
+/goz-fari
+/maskara
+* /rimel
+```
+
+Bu modda:
+- `*` olan 6 sayfa → tam analiz + title/description üretimi
+- Diğer 6 sayfa → sadece keyword haritası çıkarılır (cannibalization referansı)
+- `/likit-kapatici` sayfasına "Kapatıcı" keyword'ü atanmaz çünkü `/kapatici` sayfası zaten var
 
 ---
 
