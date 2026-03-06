@@ -38,7 +38,18 @@ Sadece title/description yazmaz — arkada şunları yapar:
 
 ### Adım 2: DataForSEO MCP'yi Claude Code'a Bağla
 
-Terminal'i aç ve şu komutu çalıştır:
+Terminal'i aç ve aşağıdaki iki seçenekten birini çalıştır:
+
+**Seçenek A — Tüm DataForSEO modüllerini aç (tam erişim):**
+
+```bash
+claude mcp add dfs-mcp \
+  --env DATAFORSEO_USERNAME=SENIN_API_LOGIN \
+  --env DATAFORSEO_PASSWORD=SENIN_API_PASSWORD \
+  -- npx -y dataforseo-mcp-server
+```
+
+**Seçenek B — Sadece gerekli modülleri aç (context window tasarrufu):**
 
 ```bash
 claude mcp add dfs-mcp \
@@ -50,7 +61,7 @@ claude mcp add dfs-mcp \
 
 > `SENIN_API_LOGIN` ve `SENIN_API_PASSWORD` kısımlarını kendi bilgilerinle değiştir.
 
-> `ENABLED_MODULES` satırı önemli — sadece gerekli modülleri açarak context window tasarrufu sağlar.
+> Seçenek A tüm DataForSEO API'lerine erişim sağlar (Backlinks, Content Analysis, vb. dahil). Seçenek B sadece bu skill'in kullandığı 4 modülü açar — daha az token harcar.
 
 Çalıştığını doğrula:
 
@@ -63,7 +74,7 @@ claude mcp list
 
 ```bash
 # Repo'yu klonla
-git clone https://github.com/KULLANICI_ADIN/seo-meta-writer.git
+git clone https://github.com/erdogan1ozdemir/seo-meta-writer.git
 
 # Global olarak kur (tüm Claude Code projelerinde kullanılabilir)
 mkdir -p ~/.claude/skills
