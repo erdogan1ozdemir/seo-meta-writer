@@ -81,42 +81,48 @@ If using via script/code instead of MCP, credentials are needed:
 }]
 ```
 
-### Location Parameter Rules — CRITICAL
+### ⛔ LOCATION PARAMETER — MUTLAK KURAL ⛔
 
-DataForSEO'da lokasyon parametreleri endpoint'e göre farklı çalışır ve yanlış format kullanınca `40501 Invalid Field` hatası verir. Bu kuralları her API çağrısında uygula:
+Bu kural tüm DataForSEO API çağrılarında geçerlidir. İSTİSNASI YOKTUR.
 
-**Kural 1: HER ZAMAN önce `location_code` kullan.** Bu en güvenilir parametredir ve tüm endpoint'lerde çalışır.
+**Türkiye için HER ZAMAN şu parametreleri kullan:**
+```json
+{"location_code": 2792, "language_code": "tr"}
+```
 
-**Kural 2: `location_name` kullanman gerekirse, ASLA `"Turkey"` yazma. Doğrusu `"Turkiye"`.** Türkiye'nin uluslararası isim değişikliği nedeniyle DataForSEO'da `"Turkey"` geçersizdir.
+**Eğer `location_name` kullanman gerekiyorsa:**
+```json
+{"location_name": "Turkiye", "language_code": "tr"}
+```
 
-**Kural 3: Bazı endpoint'ler `location_name` hiç desteklemez.** Eğer `location_name` ile hata alırsan `location_code`'a geç.
+**`"Turkey"` ASLA KULLANMA. DataForSEO'da `"Turkey"` geçersizdir, `40501 Invalid Field` hatası verir.** Türkiye'nin uluslararası isim değişikliği nedeniyle DataForSEO sistemi sadece `"Turkiye"` kabul eder.
 
-**Kural 4: `language_code` ve `language_name` karıştırma.** Bazı endpoint'ler sadece birini kabul eder.
+`location_code: 2792` (integer) en güvenilir parametredir — `location_name` desteklemeyen endpoint'lerde bile çalışır. Her zaman önce bunu dene.
 
-**Doğru lokasyon referans tablosu:**
+**Diğer ülkeler:**
 
-| Ülke | location_code | location_name (doğru yazım) | language_code | language_name |
-|------|--------------|---------------------------|---------------|---------------|
-| Türkiye | `2792` | `"Turkiye"` | `"tr"` | `"Turkish"` |
-| İngiltere | `2826` | `"United Kingdom"` | `"en"` | `"English"` |
-| Almanya | `2276` | `"Germany"` | `"de"` | `"German"` |
-| ABD | `2840` | `"United States"` | `"en"` | `"English"` |
-| Fransa | `2250` | `"France"` | `"fr"` | `"French"` |
+| Ülke | location_code | location_name | language_code |
+|------|--------------|---------------|---------------|
+| Türkiye | `2792` | `"Turkiye"` | `"tr"` |
+| İngiltere | `2826` | `"United Kingdom"` | `"en"` |
+| Almanya | `2276` | `"Germany"` | `"de"` |
+| ABD | `2840` | `"United States"` | `"en"` |
+| Fransa | `2250` | `"France"` | `"fr"` |
 
 **Endpoint bazlı tercih sırası:**
 
 | Endpoint | Birinci tercih | İkinci tercih |
 |----------|---------------|---------------|
-| Keyword Data (Search Volume) | `location_code` + `language_code` | `location_name: "Turkiye"` + `language_code` |
-| SERP API | `location_code` + `language_code` | `location_name` + `language_code` |
-| DataForSEO Labs | `location_code` + `language_code` | `location_name` + `language_name` |
+| Keyword Data (Search Volume) | `location_code: 2792` + `language_code: "tr"` | `location_name: "Turkiye"` + `language_code: "tr"` |
+| SERP API | `location_code: 2792` + `language_code: "tr"` | `location_name: "Turkiye"` + `language_code: "tr"` |
+| DataForSEO Labs | `location_code: 2792` + `language_code: "tr"` | `location_name: "Turkiye"` + `language_code: "tr"` |
 | On-Page API | Lokasyon parametresi yok | — |
 
-**Eğer location_code'dan emin değilsen:** İlk çağrıdan önce `kw_data_google_ads_locations` endpoint'ini sorgula:
+**Eğer yeni/bilinmeyen bir ülke için çağrı yapacaksan:** Önce `serp_locations` veya `kw_data_google_ads_locations` endpoint'ini sorgula:
 ```json
 {"country_iso_code": "TR", "location_type": "Country"}
 ```
-Bu sana doğru `location_code` ve `location_name` değerlerini döndürür.
+Dönen sonuçtaki `location_code` ve `location_name` değerlerini kullan.
 
 ### C. SERP API — Live Advanced
 **Purpose:** Get the current SERP for a keyword, including all organic results with their titles and descriptions.
@@ -302,36 +308,26 @@ The golden rule: **Do NOT silently skip a failed call.** Stop, diagnose, try alt
 
 ### Location-Based Errors (Most Common)
 
-DataForSEO location parameters are the #1 source of errors. The most common mistake: using `location_name: "Turkey"` — DataForSEO uses `"Turkiye"` (resmi isim değişikliği).
+**Bu hatayı hiç almaman gerekir** — çünkü yukarıdaki lokasyon kurallarına uyuyorsan ilk çağrıda doğru parametre gider. Ama yine de hata alırsan:
 
 **Hata tanıma:** Error code `40501` + `"Invalid Field: 'location_name'"` veya `"Invalid Field: 'location_code'"`
 
-**Retry sequence (try each in order until one works):**
+**Kontrol listesi (hata aldığında sırayla kontrol et):**
 
-1. **`location_code` ile dene (en güvenilir):**
-   ```json
-   {"location_code": 2792, "language_code": "tr"}
-   ```
-
-2. **Hâlâ hata varsa, `location_name` doğru yazımla dene:**
-   ```json
-   {"location_name": "Turkiye", "language_code": "tr"}
-   ```
-   > ⚠️ `"Turkey"` DEĞİL `"Turkiye"` — bu en sık yapılan hata
-
-3. **Hâlâ hata varsa, `kw_data_google_ads_locations` ile doğru değeri sorgula:**
+1. `"Turkey"` mi yazdın? → **Yanlış.** `"Turkiye"` olacak. Düzelt ve tekrar dene.
+2. `location_name` mı kullandın? → `location_code: 2792` ile değiştir ve tekrar dene. `location_code` her endpoint'te çalışır.
+3. `location_code` string mi gönderin? → Integer olmalı: `2792` (tırnak yok). Düzelt ve tekrar dene.
+4. Hâlâ hata varsa → `serp_locations` endpoint'i ile doğru location bilgisini sorgula:
    ```json
    {"country_iso_code": "TR", "location_type": "Country"}
    ```
-   Dönen sonuçtaki `location_code` ve `location_name` değerlerini kullan.
+5. **Son çare:** lokasyon parametresi olmadan dene (global sonuç döner).
 
-4. **Son çare: lokasyon parametresi olmadan dene** (global sonuç döner, ülkeye özel olmaz ama en azından çalışır)
-
-**Asla yapma:**
-- `location_name: "Turkey"` — çalışmaz
-- `location_name: "turkey"` — case-sensitive, çalışmaz  
-- `location_name: "TR"` — bu ISO kodu, location_name değil
-- `location_code: "2792"` — string olarak gönderme, integer olmalı: `2792`
+**ASLA yapma — bu değerler DataForSEO'da geçersizdir:**
+- `location_name: "Turkey"` → ❌ geçersiz, `40501` hatası verir
+- `location_name: "turkey"` → ❌ case-sensitive
+- `location_name: "TR"` → ❌ bu ISO kodu, location_name değil
+- `location_code: "2792"` → ❌ string, integer olmalı
 
 ### API Authentication Errors
 - Status 401/403 → Credentials issue. Stop and inform the user: "DataForSEO API credential hatası. API login ve password bilgilerinizi kontrol edin."

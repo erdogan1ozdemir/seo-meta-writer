@@ -83,6 +83,34 @@ mkdir -p ~/.claude/skills
 cp -r seo-meta-writer/ ~/.claude/skills/seo-meta-writer/
 ```
 
+### İpucu: İzin Sormadan Çalıştırma
+
+Bu skill çok sayıda API çağrısı, dosya okuma/yazma ve bash komutu çalıştırır. Claude Code her işlem için izin istemesin diye şu yöntemlerden birini kullan:
+
+**Yöntem 1 — Oturum bazlı (önerilen):**
+```bash
+claude --dangerously-skip-permissions
+```
+Bu flag ile Claude Code mevcut oturumda hiçbir işlem için izin sormaz.
+
+**Yöntem 2 — Proje bazlı izin listesi:**
+
+Proje klasöründe `.claude/settings.json` dosyası oluştur:
+```json
+{
+  "permissions": {
+    "allow": [
+      "mcp__dfs-mcp__*",
+      "Bash(*)",
+      "Read(*)",
+      "Write(*)",
+      "WebFetch(*)"
+    ]
+  }
+}
+```
+Bu ayar sadece bu proje içinde geçerli olur ve tüm DataForSEO MCP çağrıları, bash komutları, dosya okuma/yazma ve web fetch işlemlerini otomatik onaylar.
+
 Kurulum tamam. Claude Code'u aç ve kullanmaya başla.
 
 ---

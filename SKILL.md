@@ -18,7 +18,7 @@ Generate high-quality, data-informed meta titles and descriptions for multiple p
 
 ## Execution Mode: AUTONOMOUS
 
-This skill runs end-to-end without asking for permission at intermediate steps. Once the user provides URLs and brand info, execute the entire workflow silently and deliver the final output.
+This skill runs end-to-end without asking for permission at ANY intermediate step. Once the user provides URLs and brand info, execute the entire workflow silently and deliver the final output.
 
 **Do NOT ask for confirmation before:**
 - Making DataForSEO API calls (On-Page, SERP, Keyword Data, Labs)
@@ -28,6 +28,21 @@ This skill runs end-to-end without asking for permission at intermediate steps. 
 - Generating titles and descriptions
 - Creating Excel files
 - Running cannibalization checks
+- Reading reference files (style-rules.md, brand-profiles.md, dataforseo-integration.md)
+- Reading skill files or any bundled resource
+- Running bash commands (for data processing, file operations, etc.)
+- Saving files to disk (keyword data, SERP results, intermediate outputs, final Excel)
+- Fetching/visiting web pages (for page content analysis, schema checks, H1 extraction)
+- Writing temporary files during processing
+- Installing packages needed for Excel generation or data processing
+
+**File & tool operations — JUST DO IT:**
+- Need to read a reference file? Read it. Don't say "Let me check the style rules" — just read and apply.
+- Need to save ranked keywords to a file? Save it. Don't ask "Shall I save this data?"
+- Need to run a bash command to process data? Run it. Don't ask permission.
+- Need to create an Excel file? Create it. Don't ask "Excel oluşturayım mı?"
+- Need to fetch a URL to check its content/schema/H1? Fetch it. Don't ask "Sayfayı ziyaret edeyim mi?"
+- Need to write intermediate results? Write them. Don't narrate file operations.
 
 **Only pause and ask the user if:**
 - Brand name is missing and cannot be inferred
@@ -37,14 +52,16 @@ This skill runs end-to-end without asking for permission at intermediate steps. 
 
 **Error behavior — DO NOT SKIP, FIX:**
 - If a DataForSEO call fails, DO NOT silently skip it. Stop, diagnose the error, try alternatives (different location code, different endpoint, retry), and only report to the user if all alternatives fail.
-- Common issue: location-based errors. If location_code 2792 (Turkey) fails, try location_name "Turkey" instead, or try without location parameter, or try a different location_code format.
+- Common issue: location-based errors. ALWAYS use `location_code: 2792` (integer) for Turkey, or `location_name: "Turkiye"` (NOT "Turkey"). See `references/dataforseo-integration.md` Section "Location Parameter Rules" for details.
 - If an API returns unexpected structure, try parsing differently before giving up.
+- If a result is too large for context, save it to a file and process from there — do not ask permission.
 - Deliver the complete result set in one response, not piece by piece.
 - When the user provides enough context (URLs + brand), skip Step 1 questions entirely and go straight to work.
 
 **General behavior:**
 - If DataForSEO MCP tools are available, use them immediately — do not ask "Shall I use DataForSEO?" or "Do you want me to analyze the SERP?"
 - Batch all API calls efficiently — do not narrate each call or ask between them
+- Do not explain what you're about to do — just do it and present the results
 
 ## Before you start
 
@@ -218,17 +235,39 @@ Run the full chain as needed until topic is clear.
 - For breadcrumb: look for BreadcrumbList in schema or `.breadcrumb` / `nav[aria-label="breadcrumb"]` in HTML
 
 ### 3d. Primary Keyword Selection
-Combine page content (3a), ranking data (3b), and fallback chain (3c) to select the **primary keyword**:
-- Highest search volume among keywords that match the page's actual content
-- Prefer keywords where the page already has ranking momentum (positions 4-20 = opportunity zone)
-- If no ranking data exists, derive the primary keyword from H1 + page content topic
-- **Check against reserved keyword map** (from reference pages) — if the best keyword is reserved, pick the next best alternative
 
-### 3d. Secondary Keyword Discovery
+Primary keyword, o sayfayı/kategoriyi **en iyi şekilde ifade eden keyword** olmalıdır. Hacim önemlidir ama tek kriter değildir — keyword sayfanın tam karşılığı olmalı.
+
+**Seçim süreci:**
+
+1. Sayfa içeriği (3a) + ranking verisi (3b) + fallback chain (3c) sonuçlarını birleştir
+2. Sayfayı en doğru ifade eden keyword adayını belirle
+3. Bu adayın arama hacmini kontrol et
+
+**Eğer hacim düşük veya sıfır çıkıyorsa — DURMA, ekstra araştırma yap:**
+- Aynı konseptin farklı aranma şekillerini dene:
+  - Eş anlamlılar: "berjer" vs "berjer koltuk", "baza" vs "somya"
+  - Türkçe-İngilizce: "kapatıcı" vs "concealer"
+  - Tekil-çoğul: "koltuk" vs "koltuklar"
+  - Ekli-eksiz: "koltuk fiyatları" vs "koltuk fiyat"
+  - Farklı yazımlar: "şezlong" vs "şezlöng", "gardırop" vs "gardrop"
+- SERP'teki rakiplerin title'larında hangi terimi kullandığına bak
+- DataForSEO'da keyword suggestions/related keywords endpoint'lerini kullan
+- Her varyasyonun hacmini karşılaştır, en yüksek hacimli VE sayfayı doğru ifade edeni seç
+
+**Çatı/birleşik kategori durumları:**
+Eğer URL veya kategori iki kavramı birleştiriyorsa (ör. `/oturma-grubu-ve-koltuk-takimi`), primary keyword her iki konsepti kapsamalı. Tek bir terimi seçip diğerini düşürme.
+
+**Check against reserved keyword map** (from reference pages) — if the best keyword is reserved, pick the next best alternative.
+
+### 3e. Secondary Keyword Discovery
+
 Use **DataForSEO Labs → Ranked Keywords** on the top 3-5 SERP competitors for the primary keyword:
 - Find keyword variations the competitors rank for that our page doesn't
-- Select 1-2 secondary keywords that are semantically related and naturally fit into title/description
-- These become modifiers or supporting terms
+- **Secondary keyword sayısı sınırsızdır** — relevan olan tüm varyasyonları topla
+- Title'a sığanlar title'a, sığmayanlar description'a yerleştirilir
+- Aynı hücreye virgülle yazılır: `berjer koltuk, tekli koltuk, berjer modelleri`
+- Farklı yazım şekillerini de dahil et (ör. "TV ünitesi" ve "televizyon ünitesi" ayrı secondary keyword olabilir)
 
 ### 3e. Search Volume Validation
 Use **Keyword Data API → Search Volume** to confirm volumes for primary + secondary keywords.
@@ -320,6 +359,7 @@ Read `references/style-rules.md` for the full rule set. Key principles:
 
 ### Title Generation Rules
 - **Max 70 characters** (brand included), ideal range 55-65
+- **Title'ı KISA BIRAKMA** — 70 karakter sınırını sonuna kadar kullan. 45 karakterlik bir title varsa, yer boşa gidiyor demektir. Kalan alana keyword varyasyonu, secondary keyword veya ek modifier ekle.
 - **Primary keyword at the front** whenever grammatically natural
 - **Brand at the end** with `|` separator: `Primary KW + Modifiers | Brand`
 - **Modifier selection is data-driven** — read `references/style-rules.md` Section 4 for the full decision tree:
@@ -338,18 +378,52 @@ Read `references/style-rules.md` for the full rule set. Key principles:
 - **No subjective superlatives** like "En İyi" unless SERP data shows competitors using it heavily
 - **Language-appropriate modifiers** — Turkish: "Fiyatları", "Modelleri", "Çeşitleri"; English: "Prices", "Models", "Guide"
 
+### Keyword-First Pattern — Tek Kelimelik Kategoriler
+
+Bazı kategoriler tek bir keyword ile tanınır (berjer, puf, sifonyer, komodin, karyola vb.). Bu tür sayfalarda keyword'ü önce tek başına yaz, sonra modifier'lı versiyonunu ekle. Bu sayede hem exact-match hem modifier'lı sorguları yakalar:
+
+```
+[Keyword], [Keyword + Varyasyon] [Modifier1] ve [Modifier2] | Brand
+```
+
+**Örnekler:**
+| URL | Kötü (kısa, fırsat kaçırıyor) | İyi (sınır sonuna kadar kullanılmış) |
+|-----|------|-----|
+| `/berjer` | `Berjer Koltuk Modelleri \| Brand` (33 char) | `Berjer, Berjer Koltuk Modelleri ve Fiyatları \| Brand` (54 char) |
+| `/puf` | `Puf Modelleri \| Brand` (22 char) | `Puf, Puf Koltuk & Oturma Pufu Modelleri ve Fiyatları \| Brand` (61 char) |
+| `/sifonyer` | `Sifonyer Modelleri \| Brand` (28 char) | `Sifonyer, Sifonyer Modelleri ve Fiyatları \| Brand` (51 char) |
+| `/komodin` | `Komodin Fiyatları \| Brand` (27 char) | `Komodin, Komodin Modelleri ve Fiyatları \| Brand` (49 char) |
+
+### Çatı / Birleşik Kategori Sayfaları
+
+URL veya kategori birden fazla konsepti kapsıyorsa, title'da her iki konsepti de yansıt:
+
+```
+[Konsept1] & [Konsept2] [Modifier] | Brand
+```
+
+**Örnekler:**
+| URL | Title |
+|-----|-------|
+| `/oturma-grubu-ve-koltuk-takimi` | `Oturma Grubu & Koltuk Takımı Modelleri ve Fiyatları \| Brand` |
+| `/yatak-ve-baza` | `Yatak & Baza Modelleri ve Fiyatları, Yatak Çeşitleri \| Brand` |
+| `/mutfak-ve-banyo-mobilyasi` | `Mutfak & Banyo Mobilyası Modelleri ve Fiyatları \| Brand` |
+
+Tek bir tarafı seçip diğerini düşürme — iki keyword de hacim taşıyorsa ikisini de title'da tut.
+
 ### Title Formulas by Page Type
 
 **PLP (Category):**
 ```
-[Primary KW] [Modifier1] ve [Modifier2] | Brand
-Example: Lavabo Modelleri ve Fiyatları | VitrA
+[Primary KW], [Primary KW + Varyasyon] [Modifier1] ve [Modifier2] | Brand
+Example: Berjer, Berjer Koltuk Modelleri ve Fiyatları | Kelebek
+Example: Lavabo Modelleri ve Fiyatları, Banyo Lavabo Çeşitleri | VitrA
 ```
 
 **Brand-Filtered PLP:**
 ```
 [Brand Filter] [Category KW] [Modifier] | Platform
-Example: Altus Blender & Mikser Fiyatları - Pasaj
+Example: Altus Blender & Mikser Fiyatları | Pasaj
 ```
 
 **Ghost/Filter PLP (attribute-based):**
@@ -431,10 +505,9 @@ For each flagged pair, suggest:
 - Or consolidation recommendation if pages should be merged
 
 Mark cannibalization status in output:
-- ✅ Clean — no conflicts
-- ⚠️ Near match — review recommended  
-- 🔴 Duplicate target — must resolve
-- 🟡 Reserved by reference page — alternative keyword assigned
+- **Yok** — no conflicts
+- **Risk** — near match or semantic overlap, review recommended
+- **Var** — exact duplicate target or reserved by reference page, must resolve
 
 ## Step 7: Output
 
@@ -483,7 +556,7 @@ Read the xlsx skill (`/mnt/skills/public/xlsx/SKILL.md`) before creating the Exc
 - Header row frozen and bold
 - URL column as hyperlinks
 - Conditional formatting on character length (green ≤60 / ≤155, yellow 61-70 / 156-160, red >70 / >160)
-- Cannibalization column color-coded (✅ green, ⚠️ yellow, 🔴 red)
+- Cannibalization column: `Yok` = green, `Risk` = yellow, `Var` = red
 
 ---
 
@@ -507,19 +580,24 @@ Mention briefly at the start of output that keyword discovery and SERP analysis 
 Before presenting results, verify every row against:
 
 - [ ] Title ≤ 70 characters (including brand + separator)
+- [ ] Title ≥ 50 characters — çok kısa kalmamalı, keyword varyasyonu veya secondary keyword ekleyerek sınırı daha iyi kullan
 - [ ] Description ≤ 160 characters
+- [ ] Primary keyword sayfayı/kategoriyi doğru ifade ediyor (hacim düşükse alternatif araştırılmış)
 - [ ] Primary keyword appears in title (preferably front-loaded)
 - [ ] Primary keyword appears in description (first sentence)
+- [ ] Secondary keywords birden fazla olabilir — virgülle ayrılmış, aynı hücrede
 - [ ] Brand name is at the end of title with `|` separator
 - [ ] No year in title (unless blog or explicitly requested)
 - [ ] No .com/.com.tr in title
 - [ ] "ve" title'da en fazla 1 kez kullanılmış
 - [ ] Alt kategori sayfası üst kategorinin genel keyword'ünü çalmıyor
-- [ ] Keyword varyasyonları (TR/EN karışım, eş anlamlılar) değerlendirilmiş, hacim sırasına göre yerleştirilmiş
+- [ ] Keyword varyasyonları (TR/EN, eş anlamlılar, farklı yazımlar) değerlendirilmiş, hacim sırasına göre yerleştirilmiş
+- [ ] Tek kelimelik kategorilerde "Keyword, Keyword Varyasyon" pattern'i uygulanmış (ör. "Berjer, Berjer Koltuk")
+- [ ] Çatı/birleşik kategorilerde her iki konsept de title'da yer alıyor
 - [ ] CTA tone matches brand/sector profile
 - [ ] Siz/sen dili tutarlı (aynı description içinde karışmıyor)
-- [ ] No exact cannibalization within the batch (+ reference pages if provided)
+- [ ] Cannibalization: Var / Yok / Risk olarak işaretlenmiş
 - [ ] Description does not repeat title verbatim
-- [ ] Description'lar arasında cümle yapısı ve CTA çeşitliliği var (batch'teki 10 desc'in 8'i aynı kalıpla bitmiyor)
-- [ ] Language is consistent throughout (no mixed Turkish/English — except intentional variant targeting like "Kapatıcı, Concealer")
+- [ ] Description'lar arasında cümle yapısı ve CTA çeşitliliği var
+- [ ] Language is consistent throughout (except intentional variant targeting like "Kapatıcı, Concealer")
 - [ ] Notlar kolonu doldurulmuş — özellikle varyasyon/çift hedefleme/sayfa ziyareti yapılan satırlar için

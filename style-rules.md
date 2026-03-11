@@ -21,9 +21,14 @@ This document contains the detailed style rules derived from analysis of 1,000+ 
 | Ideal | 55–65 | Target this range for most pages |
 | Acceptable | 50–70 | OK if needed for keyword coverage |
 | Hard max | 70 | Never exceed — gets truncated in SERP |
-| Minimum | 30 | Below this looks thin in SERP |
+| Too short | < 50 | Title'ı KISA BIRAKMA — keyword varyasyonu veya secondary keyword ekle |
 
-Note: Character count includes the brand suffix (e.g., ` | VitrA` = 8 chars, ` - Pasaj` = 8 chars). Always count brand as part of the limit.
+**Title'ı 70 karakter sınırına yakın tut.** 45 karakterlik bir title boşa giden SEO fırsatıdır. Kalan alana:
+- Keyword'ün tek başına (exact-match) versiyonunu ekle: `Berjer, Berjer Koltuk...`
+- Secondary keyword veya varyasyon ekle: `...Modelleri, Banyo Lavabo Çeşitleri`
+- Farklı yazım ekle: `...Kapatıcı, Concealer`
+
+Note: Character count includes the brand suffix (e.g., ` | VitrA` = 8 chars, ` | Pasaj` = 8 chars). Always count brand as part of the limit.
 
 ### Description
 | Zone | Characters | Guidance |
