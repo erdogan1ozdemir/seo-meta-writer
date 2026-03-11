@@ -78,7 +78,8 @@ Gather essentials from context — only ask what's truly missing:
 1. **Brand name** (required) — will be appended to titles with `|` separator
 2. **Language** — auto-detect from URL TLD or path (`.com.tr` → Turkish, `/en/` → English, `/de/` → German). Only ask if ambiguous.
 3. **Sector/vertical** — infer from brand profile or URL patterns. Only ask if unknown brand.
-4. **DataForSEO** — if MCP tools are available, use them silently. Do not ask.
+4. **Hitap dili** — "siz" (default) veya "sen". Kullanıcı belirtmezse "siz" kullan. Brand profile'dan da çıkarılabilir.
+5. **DataForSEO** — if MCP tools are available, use them silently. Do not ask.
 
 If the brand is in `references/brand-profiles.md`, load its defaults and proceed — do not confirm with the user unless something seems off.
 
@@ -274,6 +275,45 @@ Based on analysis, determine for each keyword:
 
 Format this as a brief internal note that informs title/description generation.
 
+### 4d. Keyword Variant Research
+
+SERP verisi ve rakip keyword'leri incelerken, hedef keyword'ün **farklı yazım şekillerini, eş anlamlılarını ve dil varyasyonlarını** tespit et:
+
+**Tespit edilecek varyasyon türleri:**
+- **Türkçe-İngilizce karışımlar:** "kapatıcı" vs "concealer", "ruj" vs "lipstick", "fondöten" vs "foundation", "maskara" vs "rimel"
+- **Yazım varyasyonları:** "şezlong" vs "şezlöng", "klozet" vs "tuvalet"
+- **Eş anlamlılar / Kullanıcı gözünde aynı anlam:** "koltuk" vs "kanepe", "lavabo" vs "evye", "küvet" vs "banyo küveti", "dolap" vs "ünite"
+- **Renk/materyal/özellik varyantları:** "siyah lavabo", "ahşap dolap", "köşe küvet"
+- **Modifier varyasyonları:** "x modelleri", "x fiyatları", "x çeşitleri", "x fiyat" (eksiz kullanım)
+
+**Varyasyon keşif yöntemleri:**
+1. SERP'teki rakip title'lardan farklı yazım/terim kullanımlarını çıkar
+2. DataForSEO Labs → Ranked Keywords'te rakip URL'lerin rank aldığı keyword'lerdeki varyasyonları bul
+3. Search volume API ile varyasyonların hacimlerini karşılaştır
+
+**Varyasyonları title/description'a yerleştirme kuralı:**
+
+Her varyasyonun arama hacmini kontrol et. Hacim sıralamasına göre yerleştir:
+- **En yüksek hacimli varyasyon → Title'da başta** (primary keyword olarak)
+- **İkinci yüksek hacimli → Title'da virgülden sonra** (yer varsa, 70 char limiti içinde)
+- **Düşük hacimli ama relevan varyasyonlar → Description'a** doğal şekilde yerleştir
+
+**Çift hedefleme örnekleri (her iki terimi de title'a koy):**
+
+| Durum | Kötü (tek terim) | İyi (çift hedefleme) |
+|-------|-----------------|---------------------|
+| Türkçe-İngilizce karışım | `Kapatıcı Fiyatları \| Flormar` | `Kapatıcı, Concealer Modelleri ve Fiyatları \| Flormar` |
+| Eş anlamlı kullanım | `3'lü Koltuk Modelleri \| Doğtaş` | `3'lü Koltuk & 3'lü Kanepe Modelleri ve Fiyatları \| Doğtaş` |
+| Türkçe-İngilizce yakın terim | `Maskara Fiyatları \| Flormar` | `Maskara & Rimel Fiyatları, Rimel Modelleri \| Flormar` |
+| Aynı ürün farklı isim | `Baza Fiyatları \| Lova` | `Baza & Somya Modelleri ve Fiyatları \| Lova` |
+
+**Ne zaman sayfayı ziyaret et:**
+Eğer hangi varyasyonun bu sayfa için daha uygun olduğuna karar veremiyorsan (ör. `/concealer` sayfası "kapatıcı" mı "concealer" mı odaklı?), sayfayı ziyaret et:
+- H1'e bak: marka hangi terimi tercih etmiş?
+- Ürün isimlerine bak: ürün kartlarında hangi terim kullanılıyor?
+- Breadcrumb'a bak: kategori yapısında hangi isimle yer alıyor?
+- Bu bilgiyle birincil terimi belirle, diğerini ikincil olarak title'a veya description'a ekle
+
 ## Step 5: Generate Titles and Descriptions
 
 Read `references/style-rules.md` for the full rule set. Key principles:
@@ -401,7 +441,7 @@ Mark cannibalization status in output:
 ### Chat Output (always)
 Display a table with:
 ```
-| # | URL | Page Type | Primary KW | Sec. KW | New Title | T.Len | New Description | D.Len | Cannib. |
+| # | URL | Page Type | Primary KW | Sec. KW | New Title | T.Len | New Description | D.Len | Cannib. | Notlar |
 ```
 
 If DataForSEO was used, add:
@@ -409,13 +449,32 @@ If DataForSEO was used, add:
 | Pri. Vol | Sec. Vol | SERP Top Modifier | Differentiation Note |
 ```
 
+### Notlar Kolonu — Seçim Metodolojisi
+
+**Notlar kolonu her satır için zorunludur.** Özellikle şu durumlarda detaylı açıklama yaz:
+
+- **Varyasyon tercihi yapıldıysa:** Hangi varyasyonlar değerlendirildi, hacimleri ne, neden bu seçim yapıldı
+  - Örnek: `"kapatıcı" (14K) vs "concealer" (8K). İkisi de title'a eklendi. Primary olarak "kapatıcı" seçildi (daha yüksek hacim). Concealer description ve title'da secondary olarak yer aldı.`
+- **Çift hedefleme yapıldıysa:** Neden iki terimi birden title'a koydun
+  - Örnek: `"koltuk" ve "kanepe" kullanıcı gözünde eş anlamlı. SERP'te 6/10 rakip her ikisini de kullanıyor. İkisi de title'a eklendi.`
+- **Sayfa ziyaret edildiyse:** Ne gördüğün ve bu bilginin kararını nasıl etkilediği
+  - Örnek: `Sayfa ziyaret edildi — H1: "Concealer", ürün kartları Türkçe "Kapatıcı" kullanıyor. Title'da her ikisi de yer aldı.`
+- **SERP'ten farklı bir yol seçildiyse:** Rakiplerden neden ayrıştın
+  - Örnek: `SERP'te kimse "köşe" niteleyicisini kullanmıyor ama URL /kose-kuvet. Üst kategori /kuvetler zaten "Küvet" hedefliyor, bu yüzden "Köşe Küvet" ile daraltıldı.`
+- **Cannibalization riski varsa:** Detaylandır
+  - Örnek: `"Ruj" keyword'ü /ruj sayfasına ait. Bu sayfa /likit-ruj olduğu için "Likit Ruj" olarak daraltıldı.`
+
+**Basit, standart title/description'lar için kısa not yeterli:**
+- `Standart PLP. "Modelleri ve Fiyatları" modifier'ı SERP hacim verisine göre seçildi.`
+
 ### Excel Output (automatically for 10+ pages, or when user asks)
 Read the xlsx skill (`/mnt/skills/public/xlsx/SKILL.md`) before creating the Excel file. Do not ask "Excel oluşturayım mı?" — if there are 10+ pages, just create it.
 
-**Sheet 1: "Title & Description"** — Main output table with all columns above
+**Sheet 1: "Title & Description"** — Main output table with all columns above, including Notlar column
 **Sheet 2: "SERP Analysis"** (if DataForSEO used) — Per-keyword breakdown:
 - Keyword, Top 10 competitor titles, Top 10 competitor descriptions
 - Modifier frequency, CTA frequency, Avg title/desc length
+- Keyword varyasyonları ve hacimleri
 - Differentiation notes
 
 **Sheet 3: "Cannibalization Report"** (if flags exist) — Flagged pairs with recommendations
@@ -451,10 +510,16 @@ Before presenting results, verify every row against:
 - [ ] Description ≤ 160 characters
 - [ ] Primary keyword appears in title (preferably front-loaded)
 - [ ] Primary keyword appears in description (first sentence)
-- [ ] Brand name is at the end of title with correct separator
+- [ ] Brand name is at the end of title with `|` separator
 - [ ] No year in title (unless blog or explicitly requested)
 - [ ] No .com/.com.tr in title
+- [ ] "ve" title'da en fazla 1 kez kullanılmış
+- [ ] Alt kategori sayfası üst kategorinin genel keyword'ünü çalmıyor
+- [ ] Keyword varyasyonları (TR/EN karışım, eş anlamlılar) değerlendirilmiş, hacim sırasına göre yerleştirilmiş
 - [ ] CTA tone matches brand/sector profile
-- [ ] No exact cannibalization within the batch
+- [ ] Siz/sen dili tutarlı (aynı description içinde karışmıyor)
+- [ ] No exact cannibalization within the batch (+ reference pages if provided)
 - [ ] Description does not repeat title verbatim
-- [ ] Language is consistent throughout (no mixed Turkish/English)
+- [ ] Description'lar arasında cümle yapısı ve CTA çeşitliliği var (batch'teki 10 desc'in 8'i aynı kalıpla bitmiyor)
+- [ ] Language is consistent throughout (no mixed Turkish/English — except intentional variant targeting like "Kapatıcı, Concealer")
+- [ ] Notlar kolonu doldurulmuş — özellikle varyasyon/çift hedefleme/sayfa ziyareti yapılan satırlar için

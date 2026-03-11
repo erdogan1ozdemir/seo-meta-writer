@@ -143,8 +143,8 @@ Ranked Keywords verisinde, eğer daha kısa/genel bir keyword varyantı (ör. "k
 
 ## 3. Description Structure Rules
 
-### Three-Part Formula
-Every description follows this structure:
+### Three-Part Formula (ama şablon gibi olmamalı)
+Description'ın iç yapısı üç parçadır, ama çıktı doğal bir cümle gibi okunmalı:
 
 ```
 [Opening with primary keyword] + [Value proposition / features / variants] + [CTA with brand]
@@ -154,10 +154,51 @@ Every description follows this structure:
 Integrate the primary keyword into a natural opening sentence. This portion is most likely to appear in SERP even if description gets truncated.
 
 **Part 2 — Middle (differentiator, features, or secondary keyword):**
-Add value — mention product variety, key features, secondary keywords, or USPs like "ücretsiz kargo" or "hızlı teslimat" if relevant to the brand.
+Add value — mention product variety, key features, secondary keywords, keyword variants, or USPs like "ücretsiz kargo" or "hızlı teslimat" if relevant to the brand.
 
 **Part 3 — Closing CTA (last 30-40 chars):**
 End with an appropriate call-to-action that includes the brand name when possible.
+
+### Doğal Dil Kuralı — Şablon Gibi Yazma
+
+Description bir pazarlama cümlesidir, bir form dolgusu değil. Aynı kalıbı tekrar tekrar kullanmak SERP'te "robotik" görünür ve CTR düşürür.
+
+**Anti-pattern — tekrar eden şablon:**
+```
+❌ "X ürünlerini Y'de keşfedin. Z avantajlarıyla hemen inceleyin."
+❌ "X modelleri ve fiyatlarını Y'de bulabilirsiniz. Hemen tıklayın!"
+❌ "En iyi X çeşitleri Y'de sizi bekliyor. Keşfedin!"
+```
+Eğer 10 sayfanın 8'inde description aynı kalıpla başlayıp aynı kalıpla bitiyorsa, yanlış yapıyorsun.
+
+**İyi — çeşitli ve doğal:**
+```
+✅ "Banyonuza modern bir dokunuş katacak lavabo modelleri arasından seçiminizi yapın. VitrA kalitesini keşfedin."
+✅ "Köşe küvet arayanlar için özel tasarlanmış modeller. Ergonomik yapı ve şık görünümü VitrA'da inceleyin."
+✅ "Likit kapatıcı mı, stick kapatıcı mı? İhtiyacınıza uygun concealer seçeneklerini Flormar'da karşılaştırın."
+✅ "3'lü koltuk ve kanepe seçenekleriyle oturma odanızı yenileyin. Konfor ve tasarımı Doğtaş'ta bir arada bulun."
+```
+
+**Çeşitlilik sağlama teknikleri:**
+- **Cümle yapısı değiştir:** Her description "X modelleri" ile başlamak zorunda değil. Bazen soru cümlesiyle, bazen fayda cümlesiyle, bazen doğrudan aksiyonla başla.
+- **CTA'yı değiştir:** Her satır "keşfedin" ile bitmek zorunda değil. "İnceleyin", "karşılaştırın", "göz atın", "bulun", "tamamlayın" gibi alternatifler kullan.
+- **Keyword varyasyonlarını description'a yerleştir:** Title'a sığmayan ama hacmi olan varyasyonları description'da doğal şekilde kullan. Ör. title'da "kapatıcı" varsa description'da "concealer" geçebilir.
+- **Bir batch'teki 10 description'dan en fazla 3'ü aynı CTA ile bitebilir.**
+
+### Siz / Sen Dili
+
+Default: **Siz dili.** Kullanıcı "sen dili" isterse geçiş yap.
+
+| Unsur | Siz Dili (default) | Sen Dili |
+|-------|-------------------|----------|
+| CTA fiil | keşfedin, inceleyin, karşılaştırın | keşfet, incele, karşılaştır |
+| İyelik | banyonuza, evinize, ihtiyacınıza | banyona, evine, ihtiyacına |
+| Hitap | sizi bekliyor, size uygun | seni bekliyor, sana uygun |
+| Emir | hemen göz atın, tıklayın | hemen göz at, tıkla |
+
+**Aynı description içinde siz ve sen karıştırmak YASAKTIR.** Tutarlılık şart.
+
+**Brand profile'dan çıkarım:** Genç/casual markalar (ör. bazı beauty markaları) sen dilini tercih edebilir — brand profile notlarında belirtilmişse onu uygula.
 
 ### Description Tone by Sector
 
@@ -301,13 +342,14 @@ Category: "iPhone 16"
 
 ## 5. CTA Library by Tone Level
 
+Tüm Türkçe CTA'lar **siz dili** (default) ile yazılmıştır. Sen dili istenirse tablodaki dönüşümü uygula.
+
 ### Aggressive CTAs (e-commerce, marketplace)
-Turkish:
-- "Hemen satın alın!"
-- "Şimdi keşfedin!"
-- "Avantajlı fiyatlarla hemen satın alın."
-- "Fırsatları kaçırmayın, hemen inceleyin!"
-- "Turkcell güvencesiyle hemen satın alın."
+Turkish (siz / sen):
+- "Hemen satın alın!" / "Hemen satın al!"
+- "Şimdi keşfedin!" / "Şimdi keşfet!"
+- "Avantajlı fiyatlarla hemen satın alın." / "Avantajlı fiyatlarla hemen satın al."
+- "Fırsatları kaçırmayın, hemen inceleyin!" / "Fırsatları kaçırma, hemen incele!"
 
 English:
 - "Shop now!"
@@ -315,11 +357,11 @@ English:
 - "Buy now with free shipping."
 
 ### Moderate CTAs (retail, tech, general)
-Turkish:
-- "Hemen keşfedin."
-- "Fiyatları karşılaştırın, size uygun modeli bulun."
-- "Seçenekleri inceleyin."
-- "Özdilekteyim'de hemen keşfedin."
+Turkish (siz / sen):
+- "Hemen keşfedin." / "Hemen keşfet."
+- "Fiyatları karşılaştırın, size uygun modeli bulun." / "Fiyatları karşılaştır, sana uygun modeli bul."
+- "Seçenekleri inceleyin." / "Seçenekleri incele."
+- "İhtiyacınıza uygun modeli bulun." / "İhtiyacına uygun modeli bul."
 
 English:
 - "Explore the collection."
@@ -327,11 +369,11 @@ English:
 - "Browse options now."
 
 ### Soft CTAs (premium, luxury, manufacturer)
-Turkish:
-- "Keşfedin."
-- "İnceleyin."
-- "VitrA kalitesiyle tanışın."
-- "İlham veren ürünler için tıklayın."
+Turkish (siz / sen):
+- "Keşfedin." / "Keşfet."
+- "İnceleyin." / "İncele."
+- "VitrA kalitesiyle tanışın." / "VitrA kalitesiyle tanış."
+- "İlham veren ürünleri inceleyin." / "İlham veren ürünleri incele."
 
 English:
 - "Discover our collection."
@@ -339,10 +381,10 @@ English:
 - "Experience the difference."
 
 ### Informational CTAs (corporate, finance, insurance)
-Turkish:
-- "Detaylı bilgi için tıklayın."
-- "Daha fazla bilgi edinin."
-- "Başvuru için hemen ziyaret edin."
+Turkish (siz / sen):
+- "Detaylı bilgi için tıklayın." / "Detaylı bilgi için tıkla."
+- "Daha fazla bilgi edinin." / "Daha fazla bilgi edin."
+- "Hemen başvurun." / "Hemen başvur."
 
 English:
 - "Learn more."
