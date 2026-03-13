@@ -236,24 +236,36 @@ Run the full chain as needed until topic is clear.
 
 ### 3d. Primary Keyword Selection
 
-Primary keyword, o sayfayı/kategoriyi **en iyi şekilde ifade eden keyword** olmalıdır. Hacim önemlidir ama tek kriter değildir — keyword sayfanın tam karşılığı olmalı.
+Primary keyword = o sayfayı en iyi ifade eden + en yüksek anlamlı trafiği çekebilecek keyword.
+
+**Temel prensip: Hacmi yüksek ve sayfayla doğrudan ilgili keyword'ü bul.** Hacmi olmayan veya düşük olan varyasyonlarla yetinme — daha iyi bir hedef mutlaka vardır.
 
 **Seçim süreci:**
 
-1. Sayfa içeriği (3a) + ranking verisi (3b) + fallback chain (3c) sonuçlarını birleştir
-2. Sayfayı en doğru ifade eden keyword adayını belirle
-3. Bu adayın arama hacmini kontrol et
+1. **Adayları topla** — Sayfa içeriği (3a) + ranking verisi (3b) + fallback chain (3c) + rakip keyword'leri, hepsinden keyword adayları çıkar
+2. **Rakip isimlendirmelerini kontrol et** — Aynı ürün/hizmet farklı isimlerle aranıyor olabilir:
+   - Rakip sitelerin aynı kategori sayfalarının title'larına bak
+   - DataForSEO Labs → Ranked Keywords ile rakip URL'lerin rank aldığı keyword'leri çek
+   - Farklı isimlendirmeler tespit et: "bar taburesi" vs "bar sandalyesi", "komodin" vs "komidin", "şifonyer" vs "sifonyer"
+3. **Halk dilini / günlük arama davranışını araştır** — Kullanıcılar resmi terimlerle değil, günlük dille arıyor olabilir:
+   - "Çekyat" vs "yataklı kanepe" vs "yataklı koltuk"
+   - "Gardırop" vs "gardrop" vs "elbise dolabı"
+   - "Abajur" vs "masa lambası"
+   - "Baza" vs "somya" vs "yatak bazası"
+   - SERP'te hangi terim baskınsa ve hacmi yüksekse, o terimi primary yap — URL slug'ındaki veya markanın kendi kullandığı terim farklı olsa bile
+4. **Tüm adayların hacmini karşılaştır** — DataForSEO Keyword Data API ile:
+   - Her adayın exact-match hacmini çek
+   - Modifier'lı versiyonların da hacmini çek: "bar taburesi modelleri", "bar sandalyesi fiyatları"
+   - En yüksek hacimli VE sayfayı doğru ifade eden adayı primary olarak seç
+5. **URL'ye bağlı kalma zorunluluğu yok** — URL'de yazan terim ile en iyi keyword farklı olabilir:
+   - URL: `/bar-taburesi` ama "bar sandalyesi" 2x daha fazla hacimli → primary: "bar sandalyesi"
+   - URL: `/yatakli-koltuk` ama "çekyat" 3x daha fazla hacimli → primary: "çekyat", secondary: "yataklı koltuk"
+   - Notlar kolonunda bu kararı açıkla
 
-**Eğer hacim düşük veya sıfır çıkıyorsa — DURMA, ekstra araştırma yap:**
-- Aynı konseptin farklı aranma şekillerini dene:
-  - Eş anlamlılar: "berjer" vs "berjer koltuk", "baza" vs "somya"
-  - Türkçe-İngilizce: "kapatıcı" vs "concealer"
-  - Tekil-çoğul: "koltuk" vs "koltuklar"
-  - Ekli-eksiz: "koltuk fiyatları" vs "koltuk fiyat"
-  - Farklı yazımlar: "şezlong" vs "şezlöng", "gardırop" vs "gardrop"
-- SERP'teki rakiplerin title'larında hangi terimi kullandığına bak
-- DataForSEO'da keyword suggestions/related keywords endpoint'lerini kullan
-- Her varyasyonun hacmini karşılaştır, en yüksek hacimli VE sayfayı doğru ifade edeni seç
+**Eğer en iyi adayın hacmi de düşükse (niche kategori):**
+- Bir üst seviye keyword'ü düşün (ama cannibalization kontrolü ile)
+- Daha geniş bir terim + niteleyici kombinasyonu dene
+- SERP'te bu kategori için ne aranıyorsa onu referans al
 
 **Çatı/birleşik kategori durumları:**
 Eğer URL veya kategori iki kavramı birleştiriyorsa (ör. `/oturma-grubu-ve-koltuk-takimi`), primary keyword her iki konsepti kapsamalı. Tek bir terimi seçip diğerini düşürme.
@@ -262,12 +274,34 @@ Eğer URL veya kategori iki kavramı birleştiriyorsa (ör. `/oturma-grubu-ve-ko
 
 ### 3e. Secondary Keyword Discovery
 
-Use **DataForSEO Labs → Ranked Keywords** on the top 3-5 SERP competitors for the primary keyword:
-- Find keyword variations the competitors rank for that our page doesn't
-- **Secondary keyword sayısı sınırsızdır** — relevan olan tüm varyasyonları topla
-- Title'a sığanlar title'a, sığmayanlar description'a yerleştirilir
-- Aynı hücreye virgülle yazılır: `berjer koltuk, tekli koltuk, berjer modelleri`
-- Farklı yazım şekillerini de dahil et (ör. "TV ünitesi" ve "televizyon ünitesi" ayrı secondary keyword olabilir)
+Secondary keyword'ler, primary'yi destekleyen ve ek trafik çekecek keyword'lerdir. **Hacmi yüksek olanları öncelikle seç.**
+
+**Keşif yöntemleri:**
+
+1. **Rakip keyword analizi (en değerli kaynak):**
+   - SERP'teki top 3-5 rakip URL'nin rank aldığı keyword'leri DataForSEO Labs ile çek
+   - Rakiplerin trafik aldığı ama bizim sayfamızın hedeflemediği keyword'leri bul
+   - Rakiplerin title/description'larında kullandığı farklı terimleri tespit et
+   
+2. **Alternatif isimlendirmeler ve halk dili:**
+   - Aynı ürünün/hizmetin farklı adlarını araştır
+   - Sektörde yaygın kullanılan terimler: "kanepe" vs "koltuk", "rimel" vs "maskara"
+   - Marka/sektör jargonu vs kullanıcı arama terimi farklıysa kullanıcının terimini al
+
+3. **Modifier varyasyonları:**
+   - "x modelleri", "x fiyatları", "x çeşitleri", "x fiyat" (eksiz)
+   - Renk, materyal, boyut bazlı: "beyaz koltuk", "kadife koltuk", "3'lü koltuk"
+   
+**Secondary keyword seçim kriterleri (öncelik sırasıyla):**
+- **Hacim:** Yüksek hacimli varyasyonları öncelikle al. Hacmi < 100 olan keyword'leri secondary'ye ekleme (title'da yer israfı)
+- **Sayfa ilgisi:** Keyword sayfadaki ürün/hizmetle doğrudan ilişkili olmalı
+- **Title'a sığma:** En yüksek hacimli secondary'ler title'a, sığmayanlar description'a
+- **Farklılık:** Primary ile çok benzer olanları (sadece modifier farkı) değil, gerçekten farklı arama niyetini yakalayan keyword'leri tercih et
+
+**Çıktı formatı:**
+- Aynı hücreye virgülle yazılır: `bar sandalyesi, bar taburesi, yüksek sandalye`
+- Hacim sırasına göre (yüksekten düşüğe)
+- Secondary keyword sayısı sınırsız — relevan ve hacmi olan her şeyi topla
 
 ### 3e. Search Volume Validation
 Use **Keyword Data API → Search Volume** to confirm volumes for primary + secondary keywords.
@@ -314,28 +348,40 @@ Based on analysis, determine for each keyword:
 
 Format this as a brief internal note that informs title/description generation.
 
-### 4d. Keyword Variant Research
+### 4d. Keyword Variant & Competitor Naming Research
 
-SERP verisi ve rakip keyword'leri incelerken, hedef keyword'ün **farklı yazım şekillerini, eş anlamlılarını ve dil varyasyonlarını** tespit et:
+SERP verisi ve rakip keyword'leri incelerken, hedef keyword'ün **farklı yazım şekillerini, eş anlamlılarını, rakiplerdeki farklı isimlendirmelerini ve halk dilindeki karşılıklarını** tespit et:
 
 **Tespit edilecek varyasyon türleri:**
-- **Türkçe-İngilizce karışımlar:** "kapatıcı" vs "concealer", "ruj" vs "lipstick", "fondöten" vs "foundation", "maskara" vs "rimel"
-- **Yazım varyasyonları:** "şezlong" vs "şezlöng", "klozet" vs "tuvalet"
-- **Eş anlamlılar / Kullanıcı gözünde aynı anlam:** "koltuk" vs "kanepe", "lavabo" vs "evye", "küvet" vs "banyo küveti", "dolap" vs "ünite"
-- **Renk/materyal/özellik varyantları:** "siyah lavabo", "ahşap dolap", "köşe küvet"
+- **Rakip isimlendirme farkları:** Aynı ürün/kategori rakip sitelerde farklı isimle geçebilir. SERP'teki top 10 sonucun title'larını karşılaştır:
+  - "bar taburesi" vs "bar sandalyesi" vs "yüksek tabure"
+  - "TV ünitesi" vs "TV sehpası" vs "televizyon dolabı"
+  - "çekyat" vs "yataklı kanepe" vs "yataklı koltuk"
+- **Halk dili / günlük arama terimleri:** Kullanıcılar resmi/sektörel terimler yerine günlük dille arar:
+  - Marka diyor: "chaise longue" → kullanıcı arıyor: "şezlong"
+  - Marka diyor: "komot" → kullanıcı arıyor: "komodin"
+  - Marka diyor: "dresuar" → kullanıcı arıyor: "konsol" veya "aynalı şifonyer"
+  - **Hangi terimin hacmi yüksekse, o terimi kullan** — markanın kendi terimi değil, kullanıcının arama terimi önemli
+- **Türkçe-İngilizce karışımlar:** "kapatıcı" vs "concealer", "fondöten" vs "foundation", "maskara" vs "rimel"
+- **Yazım varyasyonları:** "şezlong" vs "şezlöng", "gardırop" vs "gardrop", "sifonyer" vs "şifonyer"
+- **Eş anlamlılar:** "koltuk" vs "kanepe", "lavabo" vs "evye", "dolap" vs "ünite", "baza" vs "somya"
 - **Modifier varyasyonları:** "x modelleri", "x fiyatları", "x çeşitleri", "x fiyat" (eksiz kullanım)
 
 **Varyasyon keşif yöntemleri:**
-1. SERP'teki rakip title'lardan farklı yazım/terim kullanımlarını çıkar
-2. DataForSEO Labs → Ranked Keywords'te rakip URL'lerin rank aldığı keyword'lerdeki varyasyonları bul
-3. Search volume API ile varyasyonların hacimlerini karşılaştır
+1. **SERP title/description analizi:** Top 10 sonuçta aynı ürün hangi farklı terimlerle adlandırılmış?
+2. **Rakip ranked keywords:** DataForSEO Labs ile rakip URL'lerin rank aldığı keyword'lerdeki terim farklılıklarını tespit et
+3. **Search volume karşılaştırma:** Tüm varyasyonların hacmini çek, en yüksekten en düşüğe sırala
+4. **Related keywords / keyword suggestions:** DataForSEO'nun keyword suggestion endpoint'leri ile kullanıcıların bu kategori için gerçekte ne aradığını keşfet
+
+**Kritik kural: Hacmi olmayan varyasyonları title'a koyma.** Her varyasyonun hacmini doğrula. Hacmi < 100 olan terimler title'da yer israfıdır — sadece description'da doğal geçiş yapılabilir.
 
 **Varyasyonları title/description'a yerleştirme kuralı:**
 
-Her varyasyonun arama hacmini kontrol et. Hacim sıralamasına göre yerleştir:
+Hacim sıralamasına göre yerleştir:
 - **En yüksek hacimli varyasyon → Title'da başta** (primary keyword olarak)
-- **İkinci yüksek hacimli → Title'da virgülden sonra** (yer varsa, 70 char limiti içinde)
+- **İkinci yüksek hacimli → Title'da virgülden sonra** (yer varsa, 575px limiti içinde)
 - **Düşük hacimli ama relevan varyasyonlar → Description'a** doğal şekilde yerleştir
+- **Hacmi olmayan varyasyonlar → Kullanma** (ne title ne description)
 
 **Çift hedefleme örnekleri (her iki terimi de title'a koy):**
 
