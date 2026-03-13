@@ -358,25 +358,20 @@ Eğer hangi varyasyonun bu sayfa için daha uygun olduğuna karar veremiyorsan (
 Read `references/style-rules.md` for the full rule set. Key principles:
 
 ### Title Generation Rules
-- **Max 70 characters** (brand included), ideal range 55-65
-- **Title'ı KISA BIRAKMA** — 70 karakter sınırını sonuna kadar kullan. 45 karakterlik bir title varsa, yer boşa gidiyor demektir. Kalan alana keyword varyasyonu, secondary keyword veya ek modifier ekle.
+- **Max 575px / 70 karakter** (brand dahil). Piksel birincil ölçü — Türkçe geniş karakterler (ş, ğ, ü, ö, m, w) daha fazla piksel kaplar. Detaylar: `references/style-rules.md` Section 1.
+- **Title'ı KISA BIRAKMA** — 575px sınırını sonuna kadar kullan. 400px'lik bir title varsa, yer boşa gidiyor demektir. Kalan alana keyword varyasyonu, secondary keyword veya ek modifier ekle.
 - **Primary keyword at the front** whenever grammatically natural
 - **Brand at the end** with `|` separator: `Primary KW + Modifiers | Brand`
-- **Modifier selection is data-driven** — read `references/style-rules.md` Section 4 for the full decision tree:
-  - First choice: pick the modifier with the **highest search volume** (e.g., if "lavabo modelleri" has 12K and "lavabo fiyatları" has 8K, use "modelleri" first)
-  - Second choice: if no volume data, pick the modifier **most used by SERP competitors** (e.g., 7/10 competitors use "Fiyatları" → use it)
-  - Third choice: if competitors use something unexpected (e.g., "Özellikleri" or "Karşılaştırma" dominate instead of "Fiyatları"), **follow the SERP**, not the default
-  - Last resort only: use category-based defaults from the style rules
-- **"ve" en fazla 1 kez** — title'da "ve" tekrar etme. İkinci bağlaç için `&` veya `,` kullan:
-  - Kötü: `Ruj Çeşitleri ve Renkleri, Ruj Modelleri ve Fiyatları | Flormar`
-  - İyi: `Ruj Çeşitleri & Renkleri, Ruj Modelleri ve Fiyatları | Flormar`
-- **Kategori hiyerarşisine dikkat** — alt kategori sayfası için üst kategorinin genel keyword'ünü kullanma. URL slug'ındaki niteleyici (likit, ahşap, köşe, çocuk vb.) keyword'de mutlaka korunmalı:
-  - Kötü: `/likit-kapatici` → `Kapatıcı Çeşitleri ve Fiyatları`
-  - İyi: `/likit-kapatici` → `Likit Kapatıcı Çeşitleri ve Fiyatları, Likit Concealer`
+- **URL slug'a körü körüne güvenme** — URL'deki beden, parametre, İngilizce terim veya teknik ifade yanıltıcı olabilir. URL'yi ipucu olarak kullan ama sayfanın gerçek içeriğine göre karar ver:
+  - `/bebek-kiyafetleri-50104-beden` → beden bilgisini title'a taşıma, "Bebek Kıyafetleri, Kız & Erkek Bebek Kıyafetleri" daha iyi hedefleme
+  - `/leggings` → TR site ise "tayt" hacmini kontrol et, Türkçe hacim yüksekse onu primary yap
+- **TR sitede İngilizce terime dikkat** — URL'de İngilizce terim olsa bile Türkçe karşılığının hacmini kontrol et. Türkçe hacim ≥ İngilizce ise Türkçeyi primary yap. İngilizce terimi sadece ek hacim getirecekse secondary olarak ekle.
+- **Modifier selection is data-driven** — read `references/style-rules.md` Section 4 for the full decision tree
+- **"ve" en fazla 1 kez** — ikinci bağlaç için `&` veya `,` kullan
+- **Kategori hiyerarşisine dikkat** — alt kategori sayfası için üst kategorinin genel keyword'ünü kullanma
 - **No year** in titles unless explicitly requested or blog content
 - **No .com/.com.tr** in titles
 - **No subjective superlatives** like "En İyi" unless SERP data shows competitors using it heavily
-- **Language-appropriate modifiers** — Turkish: "Fiyatları", "Modelleri", "Çeşitleri"; English: "Prices", "Models", "Guide"
 
 ### Keyword-First Pattern — Tek Kelimelik Kategoriler
 
@@ -457,10 +452,14 @@ Example: Exclusive Beachfront Resort in Marmaris, Turkey | D Maris Bay
 ```
 
 ### Description Generation Rules
-- **Max 160 characters**, ideal range 140-155
+- **Max 980px / 160 karakter**, ideal range 140-155 char. Piksel birincil ölçü.
 - **Primary keyword in first sentence** — natural integration, not stuffed
 - **Secondary keyword woven in** if space allows
-- **End with CTA** appropriate to brand tone (see style-rules.md for CTA ladder)
+- **CTA pozisyonu esnek** — CTA her zaman sonda olmak zorunda değil. Yerine göre:
+  - İlk cümle ürün/fayda → ikinci cümle CTA
+  - İlk cümle CTA → ikinci cümle detay
+  - Tek cümlede doğal entegre CTA
+  - Farklı cümle yapıları kullanarak batch genelinde çeşitlilik sağla
 - **No repetition** of the exact title text in description
 - **Include a differentiator** when SERP analysis reveals opportunity
 
@@ -477,8 +476,27 @@ When space allows and SERP shows multi-intent results, combine keywords:
 ```
 [Primary KW], [Secondary KW variant] | Brand
 Max 2-3 keywords, separated by comma or &
-Only if total stays under 70 characters
+Only if total stays under 575px / 70 characters
 ```
+
+### Alternatif Title Önerisi (A/B)
+
+Karmaşık sayfalarda (varyasyon kararı, çatı kategori, çift hedefleme, birden fazla güçlü strateji) tek title yerine **2 alternatif title** sun:
+
+**Ne zaman A/B öner:**
+- İki farklı primary keyword adayı birbirine çok yakın hacimde
+- Çift hedefleme (TR/EN) ile tek hedefleme arasında karar verilemiyor
+- Çatı kategoride hangi konsepti öne çıkaracağın belirsiz
+- SERP'te iki farklı dominant pattern var
+
+**Format:**
+```
+Title A: Berjer, Berjer Koltuk Modelleri ve Fiyatları | Kelebek (575px)
+Title B: Berjer Koltuk & Tekli Koltuk Modelleri ve Fiyatları | Kelebek (570px)
+Not: A → exact-match "berjer" yakalar + modifier'lı versiyon. B → "tekli koltuk" varyasyonunu da kapsar (8K ek hacim). A önerisi: berjer odaklı sayfaysa. B önerisi: geniş oturma grubu sayfasıysa.
+```
+
+Her sayfa için A/B sunma — sadece gerçekten iki güçlü stratejinin olduğu satırlar için. Basit sayfalarda tek title yeterli.
 
 ## Step 6: Cannibalization Check
 
@@ -514,13 +532,41 @@ Mark cannibalization status in output:
 ### Chat Output (always)
 Display a table with:
 ```
-| # | URL | Page Type | Primary KW | Sec. KW | New Title | T.Len | New Description | D.Len | Cannib. | Notlar |
+| # | URL | Page Type | Primary KW | Sec. KW | New Title | T.Len | T.Px | New Description | D.Len | D.Px | Cannib. | Öncelik | Notlar |
 ```
 
 If DataForSEO was used, add:
 ```
 | Pri. Vol | Sec. Vol | SERP Top Modifier | Differentiation Note |
 ```
+
+If alternative titles were suggested (A/B), add a second row for that URL with "Alt. Title" label.
+
+### Öncelik Kolonu — DataForSEO Bazlı Değerlendirme
+
+Her satıra **High / Medium / Low** öncelik ata. Bu, kullanıcıya "önce şunları uygula" diyebilmesi için:
+
+**Öncelik belirleme kriterleri (DataForSEO verisiyle):**
+
+**High (Yüksek):**
+- Primary keyword arama hacmi yüksek (≥5K) VE
+- Sayfa SERP'te iyi pozisyonda değil (rank >10 veya rank yok) VEYA
+- Mevcut title ile önerilen title arasında ciddi fark var (farklı keyword hedefi, eksik modifier) VEYA
+- Rakipler bu keyword'de güçlü title'larla sıralanıyor, bizim title zayıf
+
+**Medium (Orta):**
+- Primary keyword orta hacimde (1K-5K) VEYA
+- Sayfa zaten kısmen iyi pozisyonda (rank 5-10) ama title optimize edilebilir VEYA
+- Mevcut title makul ama iyileştirme potansiyeli var
+
+**Low (Düşük):**
+- Primary keyword düşük hacimde (<1K) VEYA
+- Sayfa zaten iyi pozisyonda (rank 1-5) ve mevcut title yeterli VEYA
+- Mevcut title ile önerilen title arasında minimal fark
+
+**DataForSEO olmadan (manual keyword sağlandıysa):**
+- Sadece keyword + URL pattern'e göre kabaca ata
+- Hacim bilinmiyorsa Medium default yap
 
 ### Notlar Kolonu — Seçim Metodolojisi
 
@@ -530,15 +576,17 @@ If DataForSEO was used, add:
   - Örnek: `"kapatıcı" (14K) vs "concealer" (8K). İkisi de title'a eklendi. Primary olarak "kapatıcı" seçildi (daha yüksek hacim). Concealer description ve title'da secondary olarak yer aldı.`
 - **Çift hedefleme yapıldıysa:** Neden iki terimi birden title'a koydun
   - Örnek: `"koltuk" ve "kanepe" kullanıcı gözünde eş anlamlı. SERP'te 6/10 rakip her ikisini de kullanıyor. İkisi de title'a eklendi.`
+- **URL slug'ı yok sayıldıysa:** URL'deki bilgi neden title'a taşınmadı
+  - Örnek: `URL'de "50-104 beden" var ama bu kullanıcı arama terimi değil. Beden bilgisi çıkarılıp "Bebek Kıyafetleri, Kız & Erkek Bebek Kıyafetleri" hedeflemesi yapıldı.`
+- **EN→TR dönüşüm yapıldıysa:** Neden İngilizce terim yerine Türkçe tercih edildi
+  - Örnek: `URL'de "leggings" var ama "tayt" hacmi (18K) >> "leggings" (1.2K). Primary olarak "Çocuk Tayt" seçildi.`
 - **Sayfa ziyaret edildiyse:** Ne gördüğün ve bu bilginin kararını nasıl etkilediği
-  - Örnek: `Sayfa ziyaret edildi — H1: "Concealer", ürün kartları Türkçe "Kapatıcı" kullanıyor. Title'da her ikisi de yer aldı.`
 - **SERP'ten farklı bir yol seçildiyse:** Rakiplerden neden ayrıştın
-  - Örnek: `SERP'te kimse "köşe" niteleyicisini kullanmıyor ama URL /kose-kuvet. Üst kategori /kuvetler zaten "Küvet" hedefliyor, bu yüzden "Köşe Küvet" ile daraltıldı.`
 - **Cannibalization riski varsa:** Detaylandır
-  - Örnek: `"Ruj" keyword'ü /ruj sayfasına ait. Bu sayfa /likit-ruj olduğu için "Likit Ruj" olarak daraltıldı.`
+- **A/B title sunduysan:** Her iki alternatifin mantığı
 
 **Basit, standart title/description'lar için kısa not yeterli:**
-- `Standart PLP. "Modelleri ve Fiyatları" modifier'ı SERP hacim verisine göre seçildi.`
+- `Standart PLP. "Modelleri ve Fiyatları" modifier'ı SERP hacim verisine göre seçildi. Rank 12, hacim 8K → High.`
 
 ### Excel Output (automatically for 10+ pages, or when user asks)
 Read the xlsx skill (`/mnt/skills/public/xlsx/SKILL.md`) before creating the Excel file. Do not ask "Excel oluşturayım mı?" — if there are 10+ pages, just create it.
@@ -555,8 +603,10 @@ Read the xlsx skill (`/mnt/skills/public/xlsx/SKILL.md`) before creating the Exc
 ### Formatting standards for Excel:
 - Header row frozen and bold
 - URL column as hyperlinks
-- Conditional formatting on character length (green ≤60 / ≤155, yellow 61-70 / 156-160, red >70 / >160)
+- T.Px column: green ≤500px, yellow 501-575px, red >575px
+- D.Px column: green ≤850px, yellow 851-980px, red >980px
 - Cannibalization column: `Yok` = green, `Risk` = yellow, `Var` = red
+- Öncelik column: `High` = red background, `Medium` = yellow, `Low` = green
 
 ---
 
@@ -579,25 +629,28 @@ Mention briefly at the start of output that keyword discovery and SERP analysis 
 
 Before presenting results, verify every row against:
 
-- [ ] Title ≤ 70 characters (including brand + separator)
-- [ ] Title ≥ 50 characters — çok kısa kalmamalı, keyword varyasyonu veya secondary keyword ekleyerek sınırı daha iyi kullan
-- [ ] Description ≤ 160 characters
+- [ ] Title ≤ 575px / 70 characters (brand + separator dahil)
+- [ ] Title ≥ 400px / 50 characters — kısa bırakma, keyword varyasyonu ekle
+- [ ] Description ≤ 980px / 160 characters
 - [ ] Primary keyword sayfayı/kategoriyi doğru ifade ediyor (hacim düşükse alternatif araştırılmış)
+- [ ] URL slug'ındaki yanıltıcı bilgiler (beden, parametre, EN terim) title'a körü körüne taşınmamış
+- [ ] TR hedefli sayfada İngilizce terim varsa Türkçe hacim kontrol edilmiş
 - [ ] Primary keyword appears in title (preferably front-loaded)
-- [ ] Primary keyword appears in description (first sentence)
-- [ ] Secondary keywords birden fazla olabilir — virgülle ayrılmış, aynı hücrede
+- [ ] Primary keyword appears in description
+- [ ] Secondary keywords virgülle ayrılmış, aynı hücrede
 - [ ] Brand name is at the end of title with `|` separator
 - [ ] No year in title (unless blog or explicitly requested)
 - [ ] No .com/.com.tr in title
 - [ ] "ve" title'da en fazla 1 kez kullanılmış
 - [ ] Alt kategori sayfası üst kategorinin genel keyword'ünü çalmıyor
-- [ ] Keyword varyasyonları (TR/EN, eş anlamlılar, farklı yazımlar) değerlendirilmiş, hacim sırasına göre yerleştirilmiş
-- [ ] Tek kelimelik kategorilerde "Keyword, Keyword Varyasyon" pattern'i uygulanmış (ör. "Berjer, Berjer Koltuk")
+- [ ] Keyword varyasyonları (TR/EN, eş anlamlılar, farklı yazımlar) hacim sırasına göre yerleştirilmiş
+- [ ] Tek kelimelik kategorilerde "Keyword, Keyword Varyasyon" pattern'i uygulanmış
 - [ ] Çatı/birleşik kategorilerde her iki konsept de title'da yer alıyor
-- [ ] CTA tone matches brand/sector profile
-- [ ] Siz/sen dili tutarlı (aynı description içinde karışmıyor)
+- [ ] CTA pozisyonu esnek tutulmuş, her description aynı yapıda değil
+- [ ] Siz/sen dili tutarlı
 - [ ] Cannibalization: Var / Yok / Risk olarak işaretlenmiş
+- [ ] Öncelik: High / Medium / Low atanmış (DataForSEO verisine göre)
 - [ ] Description does not repeat title verbatim
 - [ ] Description'lar arasında cümle yapısı ve CTA çeşitliliği var
-- [ ] Language is consistent throughout (except intentional variant targeting like "Kapatıcı, Concealer")
-- [ ] Notlar kolonu doldurulmuş — özellikle varyasyon/çift hedefleme/sayfa ziyareti yapılan satırlar için
+- [ ] Karmaşık satırlarda A/B alternatif title sunulmuş (gerekiyorsa)
+- [ ] Notlar kolonu doldurulmuş
