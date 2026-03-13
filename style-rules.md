@@ -13,41 +13,30 @@ This document contains the detailed style rules derived from analysis of 1,000+ 
 
 ---
 
-## 1. Pixel & Character Limits
-
-Google SERP'te title ve description'ları **piksel bazlı** keser, karakter bazlı değil. Türkçe'deki geniş karakterler (m, w, ş, ğ) daha fazla piksel kaplar. Bu yüzden birincil ölçü pikseldir.
+## 1. Character Limits
 
 ### Title
-| Ölçü | Limit | Açıklama |
-|------|-------|----------|
-| **Piksel (birincil)** | **≤ 575px** | Google desktop SERP kesme noktası |
-| Karakter (yaklaşık) | 55–65 | Çoğu Türkçe title için 575px'e denk gelir |
-| Karakter hard max | 70 | 575px'i geçmese bile 70'i aşma |
-| Çok kısa | < 50 char / < 400px | Title'ı KISA BIRAKMA — keyword varyasyonu ekle |
+| Zone | Characters | Guidance |
+|------|-----------|----------|
+| Ideal | 55–65 | Target this range for most pages |
+| Acceptable | 50–70 | OK if needed for keyword coverage |
+| Hard max | 70 | Never exceed — gets truncated in SERP |
+| Too short | < 50 | Title'ı KISA BIRAKMA — keyword varyasyonu ekle |
 
-**Piksel hesaplama rehberi:**
-- Dar harfler (i, l, t, f, r, j): ~5-6px
-- Normal harfler (a, e, o, n, s, c, d): ~7-8px
-- Geniş harfler (m, w, ş, ğ, ü, ö): ~9-11px
-- Büyük harfler: ~9-12px
-- Boşluk: ~4px
-- `|` separator + boşluklar (` | `): ~12px
-- Ortalama Türkçe kelime: ~45-55px
-
-**Title'ı 575px sınırına yakın tut.** Kısa title = boşa giden SEO fırsatı. Kalan alana:
+**Title'ı 70 karakter sınırına yakın tut.** Kısa title = boşa giden SEO fırsatı. Kalan alana:
 - Keyword'ün tek başına (exact-match) versiyonunu ekle: `Berjer, Berjer Koltuk...`
 - Secondary keyword veya varyasyon ekle: `...Modelleri, Banyo Lavabo Çeşitleri`
 - Farklı yazım ekle: `...Kapatıcı, Concealer`
 
-Note: Piksel hesabı brand suffix'i de içerir (ör. ` | VitrA` ≈ 50px, ` | Özdilekteyim` ≈ 95px). Uzun brand isimlerinde içerik kısmı için daha az alan kalır.
+Note: Karakter sayısı brand suffix'i de içerir (ör. ` | VitrA` = 8 char, ` | Özdilekteyim` = 15 char). Uzun brand isimlerinde içerik kısmı için daha az alan kalır.
 
 ### Description
-| Ölçü | Limit | Açıklama |
-|------|-------|----------|
-| **Piksel (birincil)** | **≤ 980px** | Google desktop SERP kesme noktası |
-| Karakter (yaklaşık) | 140–155 | Çoğu Türkçe description için 980px'e denk gelir |
-| Karakter hard max | 160 | 980px'i geçmese bile 160'ı aşma |
-| Minimum | 100 char / 650px | Bunun altı SERP'te zayıf görünür |
+| Zone | Characters | Guidance |
+|------|-----------|----------|
+| Ideal | 140–155 | Optimal SERP display |
+| Acceptable | 120–160 | OK range |
+| Hard max | 160 | Truncation risk above this |
+| Minimum | 100 | Below this wastes SERP real estate |
 
 ---
 
@@ -437,7 +426,7 @@ English:
 1. **No verbatim title repetition** — description should complement, not repeat the title.
 2. **No "ziyaret edin" as sole CTA** — too generic and wastes space; pair with a more specific action.
 3. **No generic openings** — avoid "Kaliteli ve birbirinden güzel X çeşitlerini incelemek için..." (template-sounding).
-4. **No exceeding 980px / 160 characters** — truncated descriptions look unprofessional.
+4. **No exceeding 160 characters** — truncated descriptions look unprofessional.
 5. **No false claims** — "En ucuz fiyat garantisi" unless the brand actually offers this.
 6. **No orphaned brand mentions** — if you mention the brand in description, it should serve the CTA, not just sit there.
 7. **No forced CTA position** — CTA her zaman sonda olmak zorunda değil. İlk cümle ürün/fayda, ikinci cümle CTA olabilir — veya tam tersi. Cümle yapısı çeşitliliğini koru.

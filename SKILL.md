@@ -240,6 +240,12 @@ Primary keyword = o sayfayı en iyi ifade eden + en yüksek anlamlı trafiği ç
 
 **Temel prensip: Hacmi yüksek ve sayfayla doğrudan ilgili keyword'ü bul.** Hacmi olmayan veya düşük olan varyasyonlarla yetinme — daha iyi bir hedef mutlaka vardır.
 
+**Tekil / Çoğul Kuralı:**
+Bir keyword'ün tekil ve çoğul hali (ör. "kayak montu" vs "kayak montları") aynı keyword sayılır — bunlar varyasyon değil. İkisini ayrı primary/secondary olarak atama. Anlama ve doğallığa göre birini tercih et:
+- Genellikle **tekil** tercih edilir: "kayak montu", "berjer koltuk", "masa lambası"
+- Çoğul sadece anlam gerektiriyorsa: "çocuk oyuncakları", "bahçe mobilyaları", "banyo aksesuarları"
+- Modifier eklendiğinde çoğul doğal düşebilir: "koltuk modelleri" (çoğul doğal), "koltuk fiyatları" (çoğul doğal)
+
 **Seçim süreci:**
 
 1. **Adayları topla** — Sayfa içeriği (3a) + ranking verisi (3b) + fallback chain (3c) + rakip keyword'leri, hepsinden keyword adayları çıkar
@@ -262,10 +268,13 @@ Primary keyword = o sayfayı en iyi ifade eden + en yüksek anlamlı trafiği ç
    - URL: `/yatakli-koltuk` ama "çekyat" 3x daha fazla hacimli → primary: "çekyat", secondary: "yataklı koltuk"
    - Notlar kolonunda bu kararı açıkla
 
-**Eğer en iyi adayın hacmi de düşükse (niche kategori):**
-- Bir üst seviye keyword'ü düşün (ama cannibalization kontrolü ile)
-- Daha geniş bir terim + niteleyici kombinasyonu dene
-- SERP'te bu kategori için ne aranıyorsa onu referans al
+**Düşük hacim döngüsü — SERP'e geri dön:**
+Eğer primary aday ve varyasyonlarının hacmi düşükse:
+1. SERP'e geri dön — bu kategori/ürün için SERP'teki top 10 sonucun title'larını analiz et
+2. Rakiplerin en ağırlıklı kullandığı keyword'leri tespit et
+3. Bu keyword'lerden bizim URL'imiz için uygun olanları değerlendir
+4. Hacmi yüksek ve sayfayla uyumlu olanı primary yap
+5. Hâlâ düşükse → bir üst seviye keyword + niteleyici kombinasyonu dene (cannibalization kontrolü ile)
 
 **Çatı/birleşik kategori durumları:**
 Eğer URL veya kategori iki kavramı birleştiriyorsa (ör. `/oturma-grubu-ve-koltuk-takimi`), primary keyword her iki konsepti kapsamalı. Tek bir terimi seçip diğerini düşürme.
@@ -274,7 +283,7 @@ Eğer URL veya kategori iki kavramı birleştiriyorsa (ör. `/oturma-grubu-ve-ko
 
 ### 3e. Secondary Keyword Discovery
 
-Secondary keyword'ler, primary'yi destekleyen ve ek trafik çekecek keyword'lerdir. **Hacmi yüksek olanları öncelikle seç.**
+Secondary keyword'ler, primary'yi destekleyen ve ek trafik çekecek keyword'lerdir. **Her secondary keyword'ün hacmi olmalı — hacimsiz keyword çıktıya yazılmaz.**
 
 **Keşif yöntemleri:**
 
@@ -291,21 +300,32 @@ Secondary keyword'ler, primary'yi destekleyen ve ek trafik çekecek keyword'lerd
 3. **Modifier varyasyonları:**
    - "x modelleri", "x fiyatları", "x çeşitleri", "x fiyat" (eksiz)
    - Renk, materyal, boyut bazlı: "beyaz koltuk", "kadife koltuk", "3'lü koltuk"
+
+**Tekil/çoğul notu:** Primary keyword ile sadece tekil-çoğul farkı olan kelimeyi secondary olarak yazma — bunlar aynı keyword. Ör. primary "kayak montu" ise secondary "kayak montları" olamaz.
    
+**Hacim zorunluluğu:**
+- **Her secondary keyword'ün arama hacmi DataForSEO'dan çekilmeli ve çıktıda yazılmalı**
+- Hacmi < 100 olan keyword'leri secondary'ye ekleme
+- Eğer bulunan secondary adaylarının hacmi düşükse → SERP'teki rakiplerin title'larına geri dön, orada kullanılan ama henüz denemediğin terimleri araştır
+- SERP'te en ağırlıklı kullanılan keyword'leri analiz et — bizim URL'imiz için bu keyword'ler kullanılabilir mi değerlendir
+
 **Secondary keyword seçim kriterleri (öncelik sırasıyla):**
-- **Hacim:** Yüksek hacimli varyasyonları öncelikle al. Hacmi < 100 olan keyword'leri secondary'ye ekleme (title'da yer israfı)
+- **Hacim:** Yüksek hacimli varyasyonları öncelikle al
 - **Sayfa ilgisi:** Keyword sayfadaki ürün/hizmetle doğrudan ilişkili olmalı
 - **Title'a sığma:** En yüksek hacimli secondary'ler title'a, sığmayanlar description'a
-- **Farklılık:** Primary ile çok benzer olanları (sadece modifier farkı) değil, gerçekten farklı arama niyetini yakalayan keyword'leri tercih et
+- **Gerçek farklılık:** Primary ile sadece tekil/çoğul veya ek farkı olan keyword'ler secondary sayılmaz. Gerçekten farklı bir arama niyetini yakalayan keyword'leri tercih et (ör. "bar sandalyesi" vs "bar taburesi" → iki farklı terim, secondary olabilir; "bar taburesi" vs "bar tabureleri" → aynı keyword, secondary olamaz)
 
 **Çıktı formatı:**
-- Aynı hücreye virgülle yazılır: `bar sandalyesi, bar taburesi, yüksek sandalye`
+- Aynı hücreye virgülle yazılır: `bar sandalyesi (2.4K), yüksek tabure (1.1K)`
 - Hacim sırasına göre (yüksekten düşüğe)
+- Her keyword'ün yanında hacmi parantez içinde belirtilir
 - Secondary keyword sayısı sınırsız — relevan ve hacmi olan her şeyi topla
 
-### 3e. Search Volume Validation
-Use **Keyword Data API → Search Volume** to confirm volumes for primary + secondary keywords.
-Attach volume data to the output.
+### 3f. Search Volume Validation
+**Tüm keyword'lerin (primary + her bir secondary) hacmi DataForSEO Keyword Data API ile doğrulanmalı.**
+- Hacim doğrulanmamış keyword çıktıya yazılmaz
+- Çıktıdaki Pri. Vol ve Sec. Vol kolonları gerçek DataForSEO verisinden doldurulur
+- Hacim verisi alınamazsa (API hatası) → Notlar'da belirt, keyword'ü yine de yaz ama hacim hücresine "N/A" koy
 
 ## Step 4: SERP Competitor Analysis (DataForSEO Enhanced)
 
@@ -379,7 +399,7 @@ SERP verisi ve rakip keyword'leri incelerken, hedef keyword'ün **farklı yazım
 
 Hacim sıralamasına göre yerleştir:
 - **En yüksek hacimli varyasyon → Title'da başta** (primary keyword olarak)
-- **İkinci yüksek hacimli → Title'da virgülden sonra** (yer varsa, 575px limiti içinde)
+- **İkinci yüksek hacimli → Title'da virgülden sonra** (yer varsa, 70 char limiti içinde)
 - **Düşük hacimli ama relevan varyasyonlar → Description'a** doğal şekilde yerleştir
 - **Hacmi olmayan varyasyonlar → Kullanma** (ne title ne description)
 
@@ -404,8 +424,8 @@ Eğer hangi varyasyonun bu sayfa için daha uygun olduğuna karar veremiyorsan (
 Read `references/style-rules.md` for the full rule set. Key principles:
 
 ### Title Generation Rules
-- **Max 575px / 70 karakter** (brand dahil). Piksel birincil ölçü — Türkçe geniş karakterler (ş, ğ, ü, ö, m, w) daha fazla piksel kaplar. Detaylar: `references/style-rules.md` Section 1.
-- **Title'ı KISA BIRAKMA** — 575px sınırını sonuna kadar kullan. 400px'lik bir title varsa, yer boşa gidiyor demektir. Kalan alana keyword varyasyonu, secondary keyword veya ek modifier ekle.
+- **Max 70 karakter** (brand dahil), ideal range 55-65. Detaylar: `references/style-rules.md` Section 1.
+- **Title'ı KISA BIRAKMA** — 70 karakter sınırını sonuna kadar kullan. 45 karakterlik bir title varsa, yer boşa gidiyor demektir. Kalan alana keyword varyasyonu, secondary keyword veya ek modifier ekle.
 - **Primary keyword at the front** whenever grammatically natural
 - **Brand at the end** with `|` separator: `Primary KW + Modifiers | Brand`
 - **URL slug'a körü körüne güvenme** — URL'deki beden, parametre, İngilizce terim veya teknik ifade yanıltıcı olabilir. URL'yi ipucu olarak kullan ama sayfanın gerçek içeriğine göre karar ver:
@@ -498,7 +518,7 @@ Example: Exclusive Beachfront Resort in Marmaris, Turkey | D Maris Bay
 ```
 
 ### Description Generation Rules
-- **Max 980px / 160 karakter**, ideal range 140-155 char. Piksel birincil ölçü.
+- **Max 160 karakter**, ideal range 140-155.
 - **Primary keyword in first sentence** — natural integration, not stuffed
 - **Secondary keyword woven in** if space allows
 - **CTA pozisyonu esnek** — CTA her zaman sonda olmak zorunda değil. Yerine göre:
@@ -522,7 +542,7 @@ When space allows and SERP shows multi-intent results, combine keywords:
 ```
 [Primary KW], [Secondary KW variant] | Brand
 Max 2-3 keywords, separated by comma or &
-Only if total stays under 575px / 70 characters
+Only if total stays under 70 characters
 ```
 
 ### Alternatif Title Önerisi (A/B)
@@ -537,8 +557,8 @@ Karmaşık sayfalarda (varyasyon kararı, çatı kategori, çift hedefleme, bird
 
 **Format:**
 ```
-Title A: Berjer, Berjer Koltuk Modelleri ve Fiyatları | Kelebek (575px)
-Title B: Berjer Koltuk & Tekli Koltuk Modelleri ve Fiyatları | Kelebek (570px)
+Title A: Berjer, Berjer Koltuk Modelleri ve Fiyatları | Kelebek (54 char)
+Title B: Berjer Koltuk & Tekli Koltuk Modelleri ve Fiyatları | Kelebek (61 char)
 Not: A → exact-match "berjer" yakalar + modifier'lı versiyon. B → "tekli koltuk" varyasyonunu da kapsar (8K ek hacim). A önerisi: berjer odaklı sayfaysa. B önerisi: geniş oturma grubu sayfasıysa.
 ```
 
@@ -578,7 +598,7 @@ Mark cannibalization status in output:
 ### Chat Output (always)
 Display a table with:
 ```
-| # | URL | Page Type | Primary KW | Sec. KW | New Title | T.Len | T.Px | New Description | D.Len | D.Px | Cannib. | Öncelik | Notlar |
+| # | URL | Page Type | Primary KW | Sec. KW | New Title | T.Len | New Description | D.Len | Cannib. | Öncelik | Notlar |
 ```
 
 If DataForSEO was used, add:
@@ -649,8 +669,8 @@ Read the xlsx skill (`/mnt/skills/public/xlsx/SKILL.md`) before creating the Exc
 ### Formatting standards for Excel:
 - Header row frozen and bold
 - URL column as hyperlinks
-- T.Px column: green ≤500px, yellow 501-575px, red >575px
-- D.Px column: green ≤850px, yellow 851-980px, red >980px
+- T.Len column: green ≤60, yellow 61-70, red >70
+- D.Len column: green ≤155, yellow 156-160, red >160
 - Cannibalization column: `Yok` = green, `Risk` = yellow, `Var` = red
 - Öncelik column: `High` = red background, `Medium` = yellow, `Low` = green
 
@@ -675,9 +695,9 @@ Mention briefly at the start of output that keyword discovery and SERP analysis 
 
 Before presenting results, verify every row against:
 
-- [ ] Title ≤ 575px / 70 characters (brand + separator dahil)
-- [ ] Title ≥ 400px / 50 characters — kısa bırakma, keyword varyasyonu ekle
-- [ ] Description ≤ 980px / 160 characters
+- [ ] Title ≤ 70 characters (brand + separator dahil)
+- [ ] Title ≥ 50 characters — kısa bırakma, keyword varyasyonu ekle
+- [ ] Description ≤ 160 characters
 - [ ] Primary keyword sayfayı/kategoriyi doğru ifade ediyor (hacim düşükse alternatif araştırılmış)
 - [ ] URL slug'ındaki yanıltıcı bilgiler (beden, parametre, EN terim) title'a körü körüne taşınmamış
 - [ ] TR hedefli sayfada İngilizce terim varsa Türkçe hacim kontrol edilmiş

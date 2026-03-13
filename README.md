@@ -40,9 +40,7 @@ Sadece title/description yazmaz — arkada şunları yapar:
 
 ### Adım 2: DataForSEO MCP'yi Claude Code'a Bağla
 
-Terminal'i aç ve aşağıdaki iki seçenekten birini çalıştır:
-
-**Seçenek A — Tüm DataForSEO modüllerini aç (tam erişim):**
+Terminal'i aç ve şu komutu çalıştır:
 
 ```bash
 claude mcp add dfs-mcp \
@@ -51,19 +49,7 @@ claude mcp add dfs-mcp \
   -- npx -y dataforseo-mcp-server
 ```
 
-**Seçenek B — Sadece gerekli modülleri aç (context window tasarrufu):**
-
-```bash
-claude mcp add dfs-mcp \
-  --env DATAFORSEO_USERNAME=SENIN_API_LOGIN \
-  --env DATAFORSEO_PASSWORD=SENIN_API_PASSWORD \
-  --env ENABLED_MODULES=SERP,KEYWORDS_DATA,ONPAGE,DATAFORSEO_LABS \
-  -- npx -y dataforseo-mcp-server
-```
-
-> `SENIN_API_LOGIN` ve `SENIN_API_PASSWORD` kısımlarını kendi bilgilerinle değiştir.
-
-> Seçenek A tüm DataForSEO API'lerine erişim sağlar (Backlinks, Content Analysis, vb. dahil). Seçenek B sadece bu skill'in kullandığı 4 modülü açar — daha az token harcar.
+> `SENIN_API_LOGIN` ve `SENIN_API_PASSWORD` kısımlarını kendi DataForSEO API bilgilerinle değiştir.
 
 Çalıştığını doğrula:
 
