@@ -81,7 +81,9 @@ Step 2: Ingest URL + keyword data
 Step 3: [If DataForSEO] Page content analysis + keyword discovery
         └─ If page topic unclear: run fallback chain (URL → Schema → H1 → Title → Content)
 Step 4: [If DataForSEO] SERP competitor title/description analysis
+        └─ 4d: Nitelik/alt segment/materyal varyasyonları keşfi
 Step 5: Generate titles and descriptions
+        └─ 4e: Variation Checkpoint — title'daki eksik varyasyonları kontrol et
 Step 6: Cannibalization check (active batch + full-site reference)
 Step 7: Output (chat table + optional Excel)
 ```
@@ -370,54 +372,108 @@ Format this as a brief internal note that informs title/description generation.
 
 ### 4d. Keyword Variant & Competitor Naming Research
 
-SERP verisi ve rakip keyword'leri incelerken, hedef keyword'ün **farklı yazım şekillerini, eş anlamlılarını, rakiplerdeki farklı isimlendirmelerini ve halk dilindeki karşılıklarını** tespit et:
+SERP verisi ve rakip keyword'leri incelerken, hedef keyword'ün **farklı yazım şekillerini, eş anlamlılarını, rakiplerdeki farklı isimlendirmelerini, halk dilindeki karşılıklarını ve o kategorinin popüler alt segment/nitelik/materyal varyasyonlarını** tespit et:
 
 **Tespit edilecek varyasyon türleri:**
-- **Rakip isimlendirme farkları:** Aynı ürün/kategori rakip sitelerde farklı isimle geçebilir. SERP'teki top 10 sonucun title'larını karşılaştır:
-  - "bar taburesi" vs "bar sandalyesi" vs "yüksek tabure"
-  - "TV ünitesi" vs "TV sehpası" vs "televizyon dolabı"
-  - "çekyat" vs "yataklı kanepe" vs "yataklı koltuk"
-- **Halk dili / günlük arama terimleri:** Kullanıcılar resmi/sektörel terimler yerine günlük dille arar:
-  - Marka diyor: "chaise longue" → kullanıcı arıyor: "şezlong"
-  - Marka diyor: "komot" → kullanıcı arıyor: "komodin"
-  - Marka diyor: "dresuar" → kullanıcı arıyor: "konsol" veya "aynalı şifonyer"
-  - **Hangi terimin hacmi yüksekse, o terimi kullan** — markanın kendi terimi değil, kullanıcının arama terimi önemli
-- **Türkçe-İngilizce karışımlar:** "kapatıcı" vs "concealer", "fondöten" vs "foundation", "maskara" vs "rimel"
-- **Yazım varyasyonları:** "şezlong" vs "şezlöng", "gardırop" vs "gardrop", "sifonyer" vs "şifonyer"
-- **Eş anlamlılar:** "koltuk" vs "kanepe", "lavabo" vs "evye", "dolap" vs "ünite", "baza" vs "somya"
-- **Modifier varyasyonları:** "x modelleri", "x fiyatları", "x çeşitleri", "x fiyat" (eksiz kullanım)
+
+**1. Nitelik / Alt Segment / Materyal / Popüler Özellik Varyasyonları (EN ÖNEMLİ):**
+Bu varyasyon türü en sık kaçırılan ve en çok trafik fırsatı barındıran türdür. Her kategorinin popüler alt tipleri, materyalleri veya öne çıkan özellikleri vardır ve bunlar bağımsız olarak yüksek hacimle aranır:
+
+| Kategori | Kaçırılan nitelik varyasyonları | Hacimleri |
+|----------|-------------------------------|-----------|
+| Lastik | yazlık lastik, oto lastik, araç lastiği | 18K, 12K, 7K |
+| Paspas | havuzlu paspas, 3D paspas, kauçuk paspas | 8K, 3K, 4K |
+| Kolonya | sprey kolonya, limon kolonyası | 6K, 5K |
+| Sabun | kalıp sabun, doğal sabun | 7K, 9K |
+| Tartı | dijital terazi, gramaj tartısı | 8K, 4K |
+| Su ısıtıcı | kettle, çay makinesi | 12K, 40K |
+| IPL | ev tipi lazer epilasyon, tüy alma cihazı | 15K, 7K |
+| Parfüm | orijinal parfüm, EDT parfüm | 18K, 5K |
+| Mutfak aletleri | küçük ev aletleri, mutfak robotu, blender | 22K, 18K, 12K |
+
+**Nasıl bulunur:**
+- Rakiplerin ranked keyword'lerinde bu kategorinin nitelikli alt keyword'lerini ara
+- SERP'te rakiplerin title'larında hangi niteleyiciler geçiyor?
+- DataForSEO keyword suggestions ile "[kategori]" sorgusu yap — önerilen keyword'lerdeki niteleyicilere bak
+- Sayfadaki filtre/facet seçenekleri ipucu verir (materyal filtresi, tip filtresi, özellik filtresi)
+
+**2. Rakip isimlendirme farkları:**
+- "bar taburesi" vs "bar sandalyesi" vs "yüksek tabure"
+- "ekmek kızartma makinesi" vs "toster"
+- "su ısıtıcı" vs "kettle"
+
+**3. Halk dili / günlük arama terimleri:**
+- Resmi: "epilasyon cihazı" → halk: "tüy alma cihazı"
+- Marka: "chaise longue" → kullanıcı: "şezlong"
+- **Hangi terimin hacmi yüksekse, o terimi kullan**
+
+**4. Türkçe-İngilizce karışımlar:** "kapatıcı" vs "concealer", "fondöten" vs "foundation"
+**5. Yazım varyasyonları:** "şezlong" vs "şezlöng", "gardırop" vs "gardrop"
+**6. Eş anlamlılar:** "koltuk" vs "kanepe", "baza" vs "somya"
+**7. Modifier varyasyonları:** "x modelleri", "x fiyatları", "x çeşitleri"
+
+**Türkçe Niteleyici Sıralaması:**
+Cinsiyet, yaş grubu, mevsim ve materyal niteleyicileri Türkçe'de ürün isminden **ÖNCE** gelir:
+- ✅ `Kadın & Erkek Deodorant Çeşitleri ve Fiyatları`
+- ❌ `Deodorant Çeşitleri ve Fiyatları, Kadın & Erkek`
+- ✅ `Dijital Mutfak Tartısı & Gramaj Tartısı Fiyatları`
+- ❌ `Mutfak Tartısı Fiyatları, Dijital`
 
 **Varyasyon keşif yöntemleri:**
-1. **SERP title/description analizi:** Top 10 sonuçta aynı ürün hangi farklı terimlerle adlandırılmış?
-2. **Rakip ranked keywords:** DataForSEO Labs ile rakip URL'lerin rank aldığı keyword'lerdeki terim farklılıklarını tespit et
-3. **Search volume karşılaştırma:** Tüm varyasyonların hacmini çek, en yüksekten en düşüğe sırala
-4. **Related keywords / keyword suggestions:** DataForSEO'nun keyword suggestion endpoint'leri ile kullanıcıların bu kategori için gerçekte ne aradığını keşfet
+1. **SERP title/description analizi:** Top 10 sonuçta hangi niteleyiciler, alt tipler, materyal/özellik terimleri geçiyor?
+2. **Rakip ranked keywords:** DataForSEO Labs ile rakip URL'lerin rank aldığı nitelikli keyword'leri tespit et
+3. **Search volume karşılaştırma:** Tüm varyasyonların hacmini çek
+4. **Related keywords / keyword suggestions:** "[kategori]" sorgusunun suggestion sonuçlarındaki niteleyicilere bak
 
-**Kritik kural: Hacmi olmayan varyasyonları title'a koyma.** Her varyasyonun hacmini doğrula. Hacmi < 100 olan terimler title'da yer israfıdır — sadece description'da doğal geçiş yapılabilir.
+**Varyasyonları title/description'a yerleştirme:**
+- **En yüksek hacimli varyasyon → Title'da başta**
+- **İkinci yüksek → Title'da virgülden/&'den sonra** (70 char limiti içinde)
+- **Düşük hacimli → Description'a** doğal şekilde
+- **Hacmi olmayan → Kullanma**
 
-**Varyasyonları title/description'a yerleştirme kuralı:**
+**Örnekler:**
 
-Hacim sıralamasına göre yerleştir:
-- **En yüksek hacimli varyasyon → Title'da başta** (primary keyword olarak)
-- **İkinci yüksek hacimli → Title'da virgülden sonra** (yer varsa, 70 char limiti içinde)
-- **Düşük hacimli ama relevan varyasyonlar → Description'a** doğal şekilde yerleştir
-- **Hacmi olmayan varyasyonlar → Kullanma** (ne title ne description)
+| Durum | Kötü | İyi |
+|-------|------|-----|
+| Nitelik/alt segment | `Lastik Fiyatları \| Brand` | `Yazlık & Oto Lastik, Araç Lastiği Fiyatları \| Brand` |
+| Nitelik/materyal | `Su Isıtıcı Fiyatları \| Brand` | `Elektrikli Su Isıtıcı, Cam & Çelik Kettle Fiyatları \| Brand` |
+| Nitelik/popüler özellik | `Paspas Fiyatları \| Brand` | `Havuzlu & 3D Oto Paspas, Araç Paspası Fiyatları \| Brand` |
+| Cinsiyet niteleyici | `Deodorant Çeşitleri, Kadın & Erkek \| Brand` | `Kadın & Erkek Deodorant Çeşitleri ve Fiyatları \| Brand` |
+| Halk dili alternatif | `Epilasyon Aleti Fiyatları \| Brand` | `IPL Lazer Epilasyon, Ev Tipi Tüy Alma Cihazı \| Brand` |
+| TR/EN karışım | `Kapatıcı Fiyatları \| Flormar` | `Kapatıcı, Concealer Modelleri ve Fiyatları \| Flormar` |
+| Eş anlamlı | `Baza Fiyatları \| Lova` | `Baza & Somya Modelleri ve Fiyatları \| Lova` |
 
-**Çift hedefleme örnekleri (her iki terimi de title'a koy):**
+### 4e. Variation Checkpoint (Title Üretimi Sonrası Doğrulama)
 
-| Durum | Kötü (tek terim) | İyi (çift hedefleme) |
-|-------|-----------------|---------------------|
-| Türkçe-İngilizce karışım | `Kapatıcı Fiyatları \| Flormar` | `Kapatıcı, Concealer Modelleri ve Fiyatları \| Flormar` |
-| Eş anlamlı kullanım | `3'lü Koltuk Modelleri \| Doğtaş` | `3'lü Koltuk & 3'lü Kanepe Modelleri ve Fiyatları \| Doğtaş` |
-| Türkçe-İngilizce yakın terim | `Maskara Fiyatları \| Flormar` | `Maskara & Rimel Fiyatları, Rimel Modelleri \| Flormar` |
-| Aynı ürün farklı isim | `Baza Fiyatları \| Lova` | `Baza & Somya Modelleri ve Fiyatları \| Lova` |
+Title üretildikten sonra, **teslim etmeden önce** her URL için şu kontrolleri çalıştır:
+
+1. **Alt segment/nitelik kontrolü:** Bu kategorinin popüler bir alt tipi, materyali veya özelliği var mı ki title'a eklenmemiş?
+   - "Sabun" yazdıysan → "kalıp sabun", "doğal sabun" kontrol ettin mi?
+   - "Tartı" yazdıysan → "dijital terazi", "gramaj tartısı" kontrol ettin mi?
+   - "Oje" yazdıysan → "likit oje", "kalıcı oje" gibi nitelik varyasyonları kontrol ettin mi?
+
+2. **Alternatif isim kontrolü:** Bu ürünün halk dilinde başka yaygın bir adı var mı?
+   - "Ekmek kızartma makinesi" → "toster" (4K)?
+   - "Su ısıtıcı" → "kettle" (12K)?
+
+3. **"Fiyatları" modifier kontrolü:** E-ticaret PLP sayfasında "fiyatları" veya "modelleri" kelimesi title'da var mı?
+
+4. **Niteleyici sıra kontrolü:** Cinsiyet/yaş/mevsim/materyal varsa ürün isminden ÖNCE mi?
+
+5. **Boş alan kontrolü:** Title 70 char altındaysa, yukarıdaki eksik varyasyonlardan biri eklenebilir mi?
+
+6. **Keyword tekrar kontrolü:** Title'da aynı keyword gereksiz yere birden fazla mı geçiyor? `Main KW + Modelleri ve Fiyatları` zaten main KW'yi cover ediyor — tekrar yazmak yer israfı. Tekrar varsa sil, o alana farklı bir varyasyon koy.
+
+7. **Cinsiyetli kategori kontrolü:** Bu sayfa cinsiyetli bir kategori mi? Evetse, jenerik versiyonu sitede ayrı bir sayfa olarak var mı? Varsa title'da jenerik keyword'ü tek başına kullanma — cinsiyet niteleyicisini ekle.
+
+8. **Modifier coverage kontrolü:** `[KW] Modelleri ve Fiyatları` yazdıysan, KW'nin exact-match, modelleri ve fiyatları versiyonlarını zaten cover ediyorsun. Kalan alanı aynı KW'yi tekrar ederek değil, gerçekten farklı bir varyasyon (nitelik, materyal, eş anlamlı, cinsiyet) ekleyerek kullan.
+
+**Eksik varyasyon tespit edersen:** Title'ı revize et, Notlar kolonunda hangi varyasyonun eklendiğini ve hacmini yaz.
 
 **Ne zaman sayfayı ziyaret et:**
-Eğer hangi varyasyonun bu sayfa için daha uygun olduğuna karar veremiyorsan (ör. `/concealer` sayfası "kapatıcı" mı "concealer" mı odaklı?), sayfayı ziyaret et:
-- H1'e bak: marka hangi terimi tercih etmiş?
-- Ürün isimlerine bak: ürün kartlarında hangi terim kullanılıyor?
-- Breadcrumb'a bak: kategori yapısında hangi isimle yer alıyor?
-- Bu bilgiyle birincil terimi belirle, diğerini ikincil olarak title'a veya description'a ekle
+Eğer hangi varyasyonun bu sayfa için daha uygun olduğuna karar veremiyorsan, sayfayı ziyaret et:
+- H1'e bak, ürün isimlerine bak, breadcrumb'a bak, filtre seçeneklerine bak
+- Bu bilgiyle hangi nitelik varyasyonlarının sayfada gerçekten mevcut olduğunu doğrula
 
 ## Step 5: Generate Titles and Descriptions
 
@@ -438,6 +494,77 @@ Read `references/style-rules.md` for the full rule set. Key principles:
 - **No year** in titles unless explicitly requested or blog content
 - **No .com/.com.tr** in titles
 - **No subjective superlatives** like "En İyi" unless SERP data shows competitors using it heavily
+
+### Cinsiyetli Kategori Kuralı
+
+Bir sitede hem jenerik hem de cinsiyete göre ayrılmış kategoriler varsa, cinsiyetli kategori sayfalarında **jenerik keyword'ü tek başına kullanma** — çünkü jenerik sayfa zaten o keyword'ü hedefliyor.
+
+**Kural:**
+- Jenerik `/ayakkabi` sayfası var + `/kadin-ayakkabi` sayfası var → kadın sayfasında "Ayakkabı" değil "Kadın Ayakkabı" kullan
+- Jenerik `/ayakkabi` sayfası var + `/erkek-ayakkabi` sayfası var → erkek sayfasında "Ayakkabı" değil "Erkek Ayakkabı" kullan
+- Bu cannibalization önlemenin bir uzantısıdır — jenerik keyword jenerik sayfanın malıdır
+
+**İstisna — Jenerik kategori yoksa:**
+Eğer sitede jenerik versiyon yoksa (ör. sadece "kadın büyük beden bluz" ve "erkek büyük beden bluz" var, "büyük beden bluz" diye ayrı bir sayfa yok), o zaman cinsiyetli sayfalardan biri jenerik keyword'ü de hedefleyebilir.
+
+**Hangi cinsiyet jenerik keyword'ü alır?** SERP'e bak:
+- "Büyük beden bluz" SERP'inde çoğunlukla kadın sayfaları mı çıkıyor? → kadın sayfası jenerik keyword'ü de alabilir
+- Erkek sayfaları baskınsa → erkek sayfası alır
+- Bu karar Notlar kolonunda açıklanmalı
+
+**Örnekler:**
+
+| Durum | Jenerik sayfa var mı? | Kötü title | İyi title |
+|-------|----------------------|-----------|-----------|
+| `/kadin-ayakkabi` | Evet (`/ayakkabi` var) | `Ayakkabı Modelleri \| Brand` | `Kadın Ayakkabı Modelleri ve Fiyatları \| Brand` |
+| `/erkek-parfum` | Evet (`/parfum` var) | `Parfüm Çeşitleri \| Brand` | `Erkek Parfüm Markaları ve Fiyatları \| Brand` |
+| `/kadin-buyuk-beden-bluz` | Hayır (jenerik yok) | `Kadın Büyük Beden Bluz \| Brand` | `Büyük Beden Bluz, Kadın Büyük Beden Bluz Modelleri \| Brand` |
+
+### Keyword Tekrar Yasağı — Anti-Redundancy Kuralı
+
+Title'da aynı keyword'ü gereksiz yere tekrar etme. `Main KW + Modelleri ve Fiyatları` yazdığında, aşağıdaki üç sorguyu zaten cover ediyorsun:
+1. `main kw` (exact match)
+2. `main kw modelleri`
+3. `main kw fiyatları`
+
+Bu yüzden aynı keyword'ü title'da bir daha yazmak **yer israfıdır**. Kalan alanı farklı varyasyonlara (nitelik, materyal, alt tip, eş anlamlı) harca.
+
+**Kötü — gereksiz tekrar:**
+```
+❌ Erkek Spor Aksesuarları & Spor Aksesuar Modelleri | Tchibo
+   → "spor aksesuar" gereksiz yere iki kez geçiyor
+
+❌ Takı, Kadın Takı Modelleri ve Fiyatları, Takı Çeşitleri | Tchibo
+   → "takı" üç kez geçiyor, hepsi gereksiz
+
+❌ Çocuk Tayt, Çocuk Tayt Modelleri ve Fiyatları | Tchibo
+   → "çocuk tayt" iki kez, modifier zaten cover ediyor
+```
+
+**İyi — her kelime ek değer taşıyor:**
+```
+✅ Erkek Spor Aksesuarları Modelleri ve Fiyatları | Tchibo
+   → modifier zaten "spor aksesuarları"nı cover ediyor, alan tasarrufu
+
+✅ Kadın Takı Modelleri & Fiyatları ve Çeşitleri | Tchibo
+   → tek yazım, üç modifier
+
+✅ Erkek & Kız Çocuk Tayt Modelleri ve Fiyatları | Tchibo
+   → tekrar yerine cinsiyet varyasyonu eklendi, ek hacim yakalandı
+```
+
+**Kendin sor:** Title'da aynı kelime grubu birden fazla mı geçiyor? Geçiyorsa, ikinci kullanım modifier (modelleri/fiyatları/çeşitleri) tarafından zaten cover ediliyor mu? Cover ediliyorsa — sil ve o alana farklı bir varyasyon koy.
+
+### Modifier Coverage Farkındalığı
+
+`[Main KW] + Modelleri ve Fiyatları` yazımı, main keyword'ün modifier'lı ve modifier'sız tüm versiyonlarını zaten kapsar. **Title'daki kalan alanı aynı keyword'ü tekrar etmek için değil, FARKLI varyasyonlar için kullan:**
+
+- **Nitelik/materyal varyasyonu:** "oje" → title'da "oje" zaten var, alan varsa "likit oje" veya "kalıcı oje" ekle
+- **Alt segment:** "sabun" → title'da "sabun" zaten var, "kalıp sabun" veya "doğal sabun" ekle
+- **Eş anlamlı:** "paspas" → title'da "paspas" zaten var, "havuzlu paspas" veya "oto paspas" ekle
+- **Cinsiyet/hedef kitle:** "tayt" → title'da "tayt" zaten var, "çocuk tayt" yerine "erkek & kız çocuk tayt" ile cinsiyet varyasyonu ekle
+
+**Kural:** Title'da bir keyword modifier'la birlikte geçiyorsa (`X modelleri ve fiyatları`), `X` kelimesini title'da bir daha yazma — o alanı tamamen farklı bir keyword varyasyonuna ayır.
 
 ### Keyword-First Pattern — Tek Kelimelik Kategoriler
 
@@ -709,7 +836,13 @@ Before presenting results, verify every row against:
 - [ ] No .com/.com.tr in title
 - [ ] "ve" title'da en fazla 1 kez kullanılmış
 - [ ] Alt kategori sayfası üst kategorinin genel keyword'ünü çalmıyor
+- [ ] **Cinsiyetli kategori kontrolü:** Jenerik sayfa varsa, cinsiyetli sayfada jenerik keyword tek başına kullanılmamış
+- [ ] **Keyword tekrar yok:** Aynı keyword gereksiz yere birden fazla geçmiyor. `KW + Modelleri ve Fiyatları` yazdıysan KW'yi bir daha yazma
+- [ ] **Modifier coverage:** Kalan alan aynı KW'yi tekrar etmek için değil, farklı varyasyon (nitelik, materyal, eş anlamlı) için kullanılmış
 - [ ] Keyword varyasyonları (TR/EN, eş anlamlılar, farklı yazımlar) hacim sırasına göre yerleştirilmiş
+- [ ] **Variation Checkpoint geçti:** Kategorinin popüler alt tipi/materyali/özelliği title'a eklenmiş mi kontrol edildi
+- [ ] **Niteleyici sırası doğru:** Cinsiyet/yaş/mevsim/materyal niteleyicisi ürün isminden ÖNCE (ör. "Kadın & Erkek Deodorant" — "Deodorant Kadın & Erkek" değil)
+- [ ] E-ticaret PLP sayfalarında "fiyatları" veya "modelleri" modifier'ı title'da var
 - [ ] Tek kelimelik kategorilerde "Keyword, Keyword Varyasyon" pattern'i uygulanmış
 - [ ] Çatı/birleşik kategorilerde her iki konsept de title'da yer alıyor
 - [ ] CTA pozisyonu esnek tutulmuş, her description aynı yapıda değil

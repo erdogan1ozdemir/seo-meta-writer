@@ -421,6 +421,17 @@ English:
     - "leggings" (1.2K) vs "tayt" (18K) → primary: "tayt", İngilizce eklenmez veya sadece description'da
     - "foundation" (6K) vs "fondöten" (22K) → primary: "fondöten"
     - "concealer" (8K) vs "kapatıcı" (14K) → primary: "kapatıcı", secondary: "concealer" (ikisi de yeterli hacimde, title'a her ikisini koy)
+15. **No keyword repetition in title** — `Main KW + Modelleri ve Fiyatları` zaten main KW'yi, main KW modelleri'ni ve main KW fiyatları'nı cover eder. Aynı keyword'ü title'da bir daha yazma — o alanı farklı bir varyasyon (nitelik, materyal, eş anlamlı) için kullan.
+    - ❌ `Çocuk Tayt, Çocuk Tayt Modelleri ve Fiyatları | Brand` → gereksiz tekrar
+    - ✅ `Erkek & Kız Çocuk Tayt Modelleri ve Fiyatları | Brand` → cinsiyet varyasyonu eklendi
+    - ❌ `Takı, Kadın Takı Modelleri, Takı Çeşitleri | Brand` → "takı" 3 kez
+    - ✅ `Kadın Takı Modelleri & Fiyatları ve Çeşitleri | Brand` → tek yazım, 3 modifier
+16. **No generic keyword on gendered pages when generic page exists** — Sitede `/ayakkabi` (jenerik) + `/kadin-ayakkabi` (cinsiyetli) varsa, kadın sayfasında "Ayakkabı Modelleri" değil "Kadın Ayakkabı Modelleri" kullan. Jenerik keyword jenerik sayfanın malıdır.
+    - ❌ `/kadin-ayakkabi` → `Ayakkabı Modelleri ve Fiyatları | Brand` (jenerik sayfa ile cannibalize)
+    - ✅ `/kadin-ayakkabi` → `Kadın Ayakkabı Modelleri ve Fiyatları | Brand`
+17. **No wasting space on already-covered keywords** — `[KW] Modelleri ve Fiyatları` yazdıysan, KW exact-match'i zaten cover edilmiş. Kalan alanı KW'yi tekrar etmek için değil, nitelik/materyal/alt tip varyasyonu eklemek için kullan.
+    - ❌ `Oje, Oje Modelleri ve Fiyatları | Brand` → "oje" gereksiz tekrar
+    - ✅ `Likit Oje & Kalıcı Oje Modelleri ve Fiyatları | Brand` → nitelik varyasyonu eklendi
 
 ### Description Anti-Patterns
 1. **No verbatim title repetition** — description should complement, not repeat the title.
